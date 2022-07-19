@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/widgets/product_item.dart';
+import 'package:shop_app/models/product.dart';
 
-import '../models/product.dart';
-
-class ProductsOverview extends StatelessWidget {
-  ProductsOverview({Key? key}) : super(key: key);
-
-  final productModels = [
+class ProductsProvider with ChangeNotifier {
+  final List<ProductModel> _products = [
     ProductModel(
       id: 'p1',
       title: 'Red Shirt',
@@ -41,31 +37,39 @@ class ProductsOverview extends StatelessWidget {
     ),
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("ProductModels Overview"),
-      ),
-      body: GridView.builder(
-        padding: EdgeInsets.all(size.height * 0.01),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //qtd de colunas
-          crossAxisCount: 2,
-          //aspect do tamanho do dado
-          childAspectRatio: 0.85,
-          //espaco entre column
-          crossAxisSpacing: size.width * 0.04,
-          //espaco entre row
-          mainAxisSpacing: size.height * 0.03,
-        ),
-        itemBuilder: (context, index) => ProductItem(
-          model: productModels[index],
-          context: context,
-        ),
-        itemCount: productModels.length,
-      ),
-    );
+  bool _showFavorites = false;
+
+  void showFavorites() {
+    _showFavorites = true;
+    notifyListeners();
+  }
+
+  void hideFavorites() {
+    _showFavorites = false;
+    notifyListeners();
+  }
+
+  List<ProductModel> get products {
+    if (_showFavorites) {
+      final res = _products.where((element) => element.isFavorite).toList();
+      return res;
+    }
+    return [..._products];
+  }
+
+  ProductModel productById(String id) => _products.firstWhere(
+        (element) => element.id == id,
+        orElse: () => _products.first,
+      );
+
+  void add(ProductModel model) {
+    _products.add(model);
+    notifyListeners();
+  }
+
+  void favoriteProduct(String id) {
+    final product = productById(id);
+    product.isFavorite = !product.isFavorite;
+    notifyListeners();
   }
 }

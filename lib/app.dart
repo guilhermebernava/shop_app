@@ -1,25 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/themes/app_colors.dart';
-import './screens/products_overview.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart_provider.dart';
+import 'package:shop_app/providers/product_detail_provider.dart';
+import 'package:shop_app/screens/cart.dart';
+import './providers/products_provider.dart';
+import './screens/product_detail/product_detail.dart';
+import './themes/app_colors.dart';
+import 'screens/products_overview/products_overview.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Shop App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: const MaterialColor(
-            AppThemeColor.color,
-            AppThemeColor.colors,
-          ),
-        ).copyWith(
-          secondary: AppColors.green,
+    //sempre que for criar uma INSTANCIA de uma classe para o PROVIDER
+    //usar o metodo CREATE para evitar BUGS.
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProductsProvider(),
         ),
-        fontFamily: 'Anton',
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(),
+        )
+      ],
+      child: MaterialApp(
+        title: 'Shop App',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: const MaterialColor(
+              AppThemeColor.color,
+              AppThemeColor.colors,
+            ),
+          ).copyWith(
+            secondary: AppColors.green,
+          ),
+          fontFamily: 'Anton',
+        ),
+        home: const ProductsOverview(),
+        routes: {
+          ProductDetail.route: (context) => ChangeNotifierProvider.value(
+                value: ProductDetailProvider(),
+                child: const ProductDetail(),
+              ),
+          Cart.route: (context) => const Cart(),
+        },
       ),
-      home: ProductsOverview(),
     );
   }
 }
