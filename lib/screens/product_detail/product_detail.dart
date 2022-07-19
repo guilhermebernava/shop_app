@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/models/cart.dart';
+import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/screens/product_detail/children/expanded_panel_product_detail.dart';
 import 'package:shop_app/screens/product_detail/children/text_row.dart';
+import 'package:shop_app/services/modal_services.dart';
 import 'package:shop_app/widgets/button_with_icon.dart';
 import 'package:shop_app/widgets/image_with_favorite.dart';
 import 'package:shop_app/widgets/radio_button.dart';
@@ -20,6 +23,7 @@ class ProductDetail extends StatelessWidget {
       context,
       listen: false,
     ).productById(id);
+    final cartProvider = Provider.of<CartProvider>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -55,7 +59,19 @@ class ProductDetail extends StatelessWidget {
               ),
               TextRow(text: "\$ ${model.price}"),
               ButtonWithIcon(
-                  text: "Add", icon: Icons.add_shopping_cart, onTap: () {}),
+                text: "Add",
+                icon: Icons.add_shopping_cart,
+                onTap: () {
+                  ModalServices.showModal(context);
+                  cartProvider.addItem(
+                    CartModel(
+                      id: model.id,
+                      title: model.title,
+                      price: model.price,
+                    ),
+                  );
+                },
+              ),
               const SizedBox(
                 height: 50,
               )

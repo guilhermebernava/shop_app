@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/product_detail_provider.dart';
-import 'package:shop_app/screens/cart.dart';
+import 'package:shop_app/screens/cart/cart.dart';
 import './providers/products_provider.dart';
 import './screens/product_detail/product_detail.dart';
 import './themes/app_colors.dart';

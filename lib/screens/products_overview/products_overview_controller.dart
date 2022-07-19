@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/enums/filter_options.dart';
-import 'package:shop_app/screens/cart.dart';
+import 'package:shop_app/screens/cart/cart.dart';
 import '../../providers/products_provider.dart';
 
 class ProductsOverviewController {

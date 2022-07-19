@@ -53,7 +53,7 @@ class ProductItem extends StatelessWidget {
                 ),
                 onPressed: () => cartProvider.addItem(
                   CartModel(
-                    id: DateTime.now().toString(),
+                    id: provider.id,
                     title: provider.title,
                     price: provider.price,
                   ),
