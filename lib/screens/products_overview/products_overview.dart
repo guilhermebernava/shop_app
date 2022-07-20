@@ -8,8 +8,6 @@ import 'package:shop_app/screens/products_overview/products_overview_controller.
 import 'package:shop_app/widgets/app_drawer.dart';
 import 'package:shop_app/widgets/badge_button.dart';
 
-import '../orders/orders.dart';
-
 class ProductsOverview extends StatelessWidget {
   const ProductsOverview({Key? key}) : super(key: key);
 

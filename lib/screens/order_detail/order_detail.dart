@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/order_provider.dart';
-import 'package:shop_app/themes/app_colors.dart';
 import 'package:shop_app/widgets/rounded_image.dart';
 
 class OrderDetail extends StatelessWidget {
