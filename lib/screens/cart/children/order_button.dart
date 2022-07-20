@@ -3,14 +3,20 @@ import '../../../themes/app_colors.dart';
 
 class OrderButton extends StatelessWidget {
   final Size size;
-  const OrderButton({Key? key, required this.size}) : super(key: key);
+  final VoidCallback onTap;
+
+  const OrderButton({
+    Key? key,
+    required this.size,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
             color: AppColors.purple,

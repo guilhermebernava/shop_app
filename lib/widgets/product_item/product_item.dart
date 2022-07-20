@@ -56,6 +56,7 @@ class ProductItem extends StatelessWidget {
                     id: provider.id,
                     title: provider.title,
                     price: provider.price,
+                    imageUrl: provider.imageUrl,
                   ),
                 ),
               ),

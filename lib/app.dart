@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
+import 'package:shop_app/providers/order_provider.dart';
 import 'package:shop_app/providers/product_detail_provider.dart';
 import 'package:shop_app/screens/cart/cart.dart';
+import 'package:shop_app/screens/orders.dart';
 import './providers/products_provider.dart';
 import './screens/product_detail/product_detail.dart';
 import './themes/app_colors.dart';
@@ -21,6 +23,9 @@ class App extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (_) => CartProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrderProvider(),
         )
       ],
       child: MaterialApp(
@@ -43,6 +48,7 @@ class App extends StatelessWidget {
                 child: const ProductDetail(),
               ),
           Cart.route: (context) => const Cart(),
+          Orders.route: (context) => const Orders(),
         },
       ),
     );

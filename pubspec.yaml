@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   custom_radio_grouped_button: ^2.1.2+2
   provider: ^6.0.3
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:

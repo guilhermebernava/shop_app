@@ -62,12 +62,13 @@ class ProductDetail extends StatelessWidget {
                 text: "Add",
                 icon: Icons.add_shopping_cart,
                 onTap: () {
-                  ModalServices.showModal(context);
+                  ModalServices.goToCart(context);
                   cartProvider.addItem(
                     CartModel(
                       id: model.id,
                       title: model.title,
                       price: model.price,
+                      imageUrl: model.imageUrl,
                     ),
                   );
                 },

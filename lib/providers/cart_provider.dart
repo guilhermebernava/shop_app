@@ -39,6 +39,19 @@ class CartProvider with ChangeNotifier {
     return [];
   }
 
+  void clearCart() {
+    _items.removeWhere(((key, value) => true));
+    notifyListeners();
+  }
+
+  List<CartModel> get allItems {
+    final List<CartModel> finalList = [];
+    _items.forEach((key, value) {
+      finalList.add(value);
+    });
+    return finalList;
+  }
+
   void updateQtdByKey(String mapKey, int qtd) {
     if (_items.containsKey(mapKey)) {
       if (qtd == 0) {
@@ -54,6 +67,7 @@ class CartProvider with ChangeNotifier {
           title: value.title,
           price: value.price,
           quantity: qtd,
+          imageUrl: value.imageUrl,
         ),
       );
       notifyListeners();
@@ -76,6 +90,7 @@ class CartProvider with ChangeNotifier {
           id: model.id,
           title: value.title,
           price: value.price,
+          imageUrl: value.imageUrl,
           quantity: value.quantity + 1,
         ),
       );

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
+import 'package:shop_app/providers/order_provider.dart';
 import 'package:shop_app/screens/cart/children/card_item.dart';
 import 'package:shop_app/screens/cart/children/order_button.dart';
+import 'package:shop_app/services/modal_services.dart';
 import 'package:shop_app/widgets/card_total.dart';
 
 class Cart extends StatelessWidget {
@@ -13,6 +15,8 @@ class Cart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('CART'),
@@ -30,9 +34,10 @@ class Cart extends StatelessWidget {
                     var res = model == null
                         ? const Text('ERROR')
                         : CardItem(
+                            imageUrl: model.imageUrl,
                             key: ValueKey(key),
                             mapKey: key,
-                            price: model.price.toString(),
+                            price: model.price,
                             title: model.title,
                             quantity: model.quantity,
                             onPressed: () => value.removeItem(model.id),
@@ -49,7 +54,14 @@ class Cart extends StatelessWidget {
                 padding: EdgeInsets.only(
                   bottom: size.height * 0.02,
                 ),
-                child: OrderButton(size: size),
+                child: OrderButton(
+                  size: size,
+                  onTap: () {
+                    value.clearCart();
+                    orderProvider.addOrder(value.totalValue, value.allItems);
+                    ModalServices.orderDone(context);
+                  },
+                ),
               ),
             ],
           );
