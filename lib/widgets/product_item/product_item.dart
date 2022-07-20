@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/models/product.dart';
 import 'package:shop_app/providers/cart_provider.dart';
+import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/themes/app_colors.dart';
 import 'package:shop_app/widgets/image_with_favorite.dart';
 import 'package:shop_app/widgets/product_item/product_item_controller.dart';
@@ -17,6 +18,9 @@ class ProductItem extends StatelessWidget {
     //se o LISTEN estiver como false, esse metodo BUILD
     //nn vai ser chamado novamente quando NOTFITY LISTENERS for chamado.
     final provider = Provider.of<ProductModel>(
+      context,
+    );
+    final productsProvider = Provider.of<ProductsProvider>(
       context,
       listen: false,
     );
@@ -61,13 +65,11 @@ class ProductItem extends StatelessWidget {
                 ),
               ),
             ),
-            child: Consumer<ProductModel>(
-              builder: (context, value, child) => ImageWithFavorite(
-                favorited: value.isFavorite,
-                imageUrl: value.imageUrl,
-                onTap: () => value.favoriteProduct(),
-                size: size,
-              ),
+            child: ImageWithFavorite(
+              favorited: provider.isFavorite,
+              imageUrl: provider.imageUrl,
+              onTap: () => productsProvider.favoriteProduct(provider.id),
+              size: size,
             ),
           ),
         ),

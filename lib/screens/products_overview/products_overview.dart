@@ -7,7 +7,7 @@ import 'package:shop_app/screens/products_overview/children/product_grid.dart';
 import 'package:shop_app/screens/products_overview/products_overview_controller.dart';
 import 'package:shop_app/widgets/badge_button.dart';
 
-import '../orders.dart';
+import '../orders/orders.dart';
 
 class ProductsOverview extends StatelessWidget {
   const ProductsOverview({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class ProductsOverview extends StatelessWidget {
         title: const Text("ProductModels Overview"),
         leading: IconButton(
           onPressed: () => Navigator.pushNamed(context, Orders.route),
-          icon: const Icon(Icons.online_prediction_rounded),
+          icon: const Icon(Icons.h_mobiledata),
         ),
         actions: [
           PopupMenuButton(

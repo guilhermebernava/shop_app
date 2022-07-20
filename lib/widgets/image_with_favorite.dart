@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'image_with_shadow.dart';
 
 class ImageWithFavorite extends Stack {
-  ImageWithFavorite(
-      {Key? key,
-      required Size size,
-      required VoidCallback onTap,
-      required String imageUrl,
-      required bool favorited})
-      : super(
+  ImageWithFavorite({
+    Key? key,
+    required Size size,
+    required VoidCallback onTap,
+    required String imageUrl,
+    required bool favorited,
+  }) : super(
           key: key,
           alignment: Alignment.topRight,
           children: [

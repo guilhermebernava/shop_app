@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/order_provider.dart';
+import 'package:shop_app/screens/orders/children/orders_item.dart';
 
 class Orders extends StatelessWidget {
   const Orders({Key? key}) : super(key: key);
@@ -15,7 +16,12 @@ class Orders extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Orders"),
       ),
-      body: Text(provider.orders.length.toString()),
+      body: ListView.builder(
+        itemBuilder: (context, index) => OrderItem(
+          order: provider.orderAtIndex(index),
+        ),
+        itemCount: provider.lenght,
+      ),
     );
   }
 }

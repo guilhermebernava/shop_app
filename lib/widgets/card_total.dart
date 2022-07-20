@@ -11,6 +11,8 @@ class CardTotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 2,
+      color: Colors.white,
       margin: const EdgeInsets.all(5),
       child: Padding(
         padding: const EdgeInsets.all(10.0),

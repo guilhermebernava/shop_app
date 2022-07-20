@@ -8,6 +8,13 @@ class OrderProvider with ChangeNotifier {
 
   List<Order> get orders => [..._orders];
 
+  Order orderAtIndex(int index) => _orders.elementAt(index);
+
+  Order orderById(String id) =>
+      _orders.firstWhere((element) => element.id == id);
+
+  int get lenght => _orders.length;
+
   void addOrder(double total, List<CartModel> items) {
     _orders.add(
       Order(DateTime.now(), total: total, id: const Uuid().v1(), items: items),
