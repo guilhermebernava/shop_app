@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/models/cart.dart';
 import 'package:shop_app/models/product.dart';
-import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/themes/app_colors.dart';
 import 'package:shop_app/widgets/image_with_favorite.dart';
@@ -25,7 +23,6 @@ class ProductItem extends StatelessWidget {
       listen: false,
     );
     final size = MediaQuery.of(context).size;
-    final cartProvider = Provider.of<CartProvider>(context, listen: false);
 
     return InkWell(
       key: key,
@@ -55,14 +52,7 @@ class ProductItem extends StatelessWidget {
                   Icons.shopping_cart,
                   color: AppColors.green,
                 ),
-                onPressed: () => cartProvider.addItem(
-                  CartModel(
-                    id: provider.id,
-                    title: provider.title,
-                    price: provider.price,
-                    imageUrl: provider.imageUrl,
-                  ),
-                ),
+                onPressed: () => controller.addToCart(context, provider),
               ),
             ),
             child: ImageWithFavorite(

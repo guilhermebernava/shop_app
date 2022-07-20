@@ -6,8 +6,8 @@ import '../../services/modal_services.dart';
 
 class CartController {
   void createOrder(BuildContext context) {
-    final orderProvider = Provider.of<OrderProvider>(context);
-    final value = Provider.of<CartProvider>(context);
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    final value = Provider.of<CartProvider>(context, listen: false);
 
     var total = value.totalValue;
     var items = value.allItems;

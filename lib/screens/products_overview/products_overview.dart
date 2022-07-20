@@ -5,6 +5,7 @@ import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/screens/products_overview/children/product_grid.dart';
 import 'package:shop_app/screens/products_overview/products_overview_controller.dart';
+import 'package:shop_app/widgets/app_drawer.dart';
 import 'package:shop_app/widgets/badge_button.dart';
 
 import '../orders/orders.dart';
@@ -19,12 +20,9 @@ class ProductsOverview extends StatelessWidget {
     final provider = Provider.of<ProductsProvider>(context, listen: false);
 
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
         title: const Text("ProductModels Overview"),
-        leading: IconButton(
-          onPressed: () => Navigator.pushNamed(context, Orders.route),
-          icon: const Icon(Icons.h_mobiledata),
-        ),
         actions: [
           PopupMenuButton(
             icon: const Icon(

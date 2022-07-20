@@ -8,7 +8,7 @@ import '../../services/modal_services.dart';
 class ProductDetailController {
   void addCart(BuildContext context, ProductModel model) {
     ModalServices.goToCart(context);
-    final cartProvider = Provider.of<CartProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     cartProvider.addItem(
       CartModel(
         id: model.id,

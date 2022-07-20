@@ -23,7 +23,7 @@ class OrderItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
         child: Card(
           child: ListTile(
-            title: Text('Total: \$ ${order.total}'),
+            title: Text('Total: \$ ${order.total.toStringAsFixed(2)}'),
             trailing: Text(
               DateFormat('yyyy-MM-dd').format(order.dateOrder),
               style: const TextStyle(

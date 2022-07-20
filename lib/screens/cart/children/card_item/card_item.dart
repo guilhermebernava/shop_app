@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/screens/cart/children/card_item/card_item_controller.dart';
 import 'package:shop_app/themes/app_colors.dart';
+import 'package:shop_app/widgets/rounded_image.dart';
 
 class CardItem extends StatelessWidget {
   final Size size;
@@ -51,16 +52,8 @@ class CardItem extends StatelessWidget {
           contentPadding:
               const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
           subtitle: Text('Total: \$${(price * quantity).toStringAsFixed(2)}'),
-          leading: SizedBox(
-            width: 50,
-            height: 50,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: Image.network(
-                imageUrl,
-                fit: BoxFit.fill,
-              ),
-            ),
+          leading: RoundedImage(
+            imageUrl: imageUrl,
           ),
           title: Text(title),
           trailing: Consumer<CartProvider>(
