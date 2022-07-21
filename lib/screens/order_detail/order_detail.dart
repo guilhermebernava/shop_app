@@ -23,7 +23,7 @@ class OrderDetail extends StatelessWidget {
             leading: RoundedImage(imageUrl: model.items[index].imageUrl),
             title: Text(model.items[index].title),
             subtitle: Text(
-                'Price: ${model.items[index].price * model.items[index].quantity}'),
+                'Price: ${(model.items[index].price * model.items[index].quantity).toStringAsFixed(2)}'),
             trailing: Text(
               "${model.items[index].quantity} X ",
             ),
