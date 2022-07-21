@@ -29,7 +29,7 @@ class UserProductItem extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () => controller.redirect(context, model.id),
                       icon: const Icon(
                         Icons.edit,
                         color: AppColors.green,
