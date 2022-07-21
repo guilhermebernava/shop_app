@@ -26,12 +26,12 @@ class ProductGrid extends StatelessWidget {
       //pelo fato dele nn usar o BUILDER ele nao
       //vai gerar problemas com listas
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
-        value: provider.products[index],
+        value: provider.productsOrFavorites[index],
         child: ProductItem(
-          id: provider.products[index].id,
+          id: provider.productsOrFavorites[index].id,
         ),
       ),
-      itemCount: provider.products.length,
+      itemCount: provider.productsOrFavorites.length,
     );
   }
 }

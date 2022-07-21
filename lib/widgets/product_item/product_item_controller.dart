@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/themes/app_colors.dart';
+import 'package:shop_app/services/snackbar_services.dart';
 import '../../models/cart.dart';
 import '../../models/product.dart';
 import '../../providers/cart_provider.dart';
@@ -22,24 +22,7 @@ class ProductItemController {
       ),
     );
 
-    ScaffoldMessenger.of(context).clearSnackBars();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        elevation: 2,
-        backgroundColor: AppColors.green,
-        duration: Duration(milliseconds: 500),
-        dismissDirection: DismissDirection.up,
-        content: Text(
-          "Add this item to cart!",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: 'Anton',
-            fontSize: 20,
-          ),
-        ),
-      ),
-    );
+    SnackbarServices.showSnackbar(context, 'Added to cart sucessefully!');
   }
 
   void redirect(BuildContext context) {

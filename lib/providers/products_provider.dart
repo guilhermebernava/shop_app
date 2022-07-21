@@ -49,13 +49,15 @@ class ProductsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<ProductModel> get products {
+  List<ProductModel> get productsOrFavorites {
     if (_showFavorites) {
       final res = _products.where((element) => element.isFavorite).toList();
       return res;
     }
     return [..._products];
   }
+
+  List<ProductModel> get products => [..._products];
 
   ProductModel productById(String id) => _products.firstWhere(
         (element) => element.id == id,
@@ -64,6 +66,11 @@ class ProductsProvider with ChangeNotifier {
 
   void add(ProductModel model) {
     _products.add(model);
+    notifyListeners();
+  }
+
+  void removeByItem(ProductModel model) {
+    _products.remove(model);
     notifyListeners();
   }
 

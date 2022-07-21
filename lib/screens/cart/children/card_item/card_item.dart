@@ -32,6 +32,7 @@ class CardItem extends StatelessWidget {
     return Dismissible(
       onDismissed: (direction) => onPressed(),
       direction: DismissDirection.endToStart,
+      confirmDismiss: (direction) => controller.confirmDismiss(context),
       background: Container(
         color: Colors.redAccent,
         margin: const EdgeInsets.symmetric(vertical: 4),
