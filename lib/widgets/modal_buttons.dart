@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
 import '../themes/app_colors.dart';
 
 class ModalButtons extends StatelessWidget {
   final double modalSize;
   final String leftButtonName;
   final String rightButtonName;
+
   const ModalButtons({
     Key? key,
     required this.modalSize,
