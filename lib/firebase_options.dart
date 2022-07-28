@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart'
     show Firebase, FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -54,22 +55,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCc_SvfilUGBhX3FTc1R2DvvfC2h0CGKCo',
-    appId: '1:806624052611:android:b42d2ab220779a9d2522b6',
-    messagingSenderId: '806624052611',
-    projectId: 'shop-app-5e60e',
-    storageBucket: 'shop-app-5e60e.appspot.com',
+  static final FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['AndroidApiKey']!,
+    appId: dotenv.env['AndroidAppId']!,
+    messagingSenderId: dotenv.env['AndroidMessagingSenderId']!,
+    projectId: dotenv.env['AndroidProjectId']!,
+    storageBucket: dotenv.env['AndroidStorageBucket']!,
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBHGj-w6KPi7tzDEUi8E7hW3Rh5YagKpOA',
-    appId: '1:806624052611:ios:46c4812d6916b65b2522b6',
-    messagingSenderId: '806624052611',
-    projectId: 'shop-app-5e60e',
-    storageBucket: 'shop-app-5e60e.appspot.com',
-    iosClientId:
-        '806624052611-g9qvk7o02pil3mqddfljkagbis7b3nll.apps.googleusercontent.com',
-    iosBundleId: 'com.example.shopApp',
+  static final FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['IosApiKey']!,
+    appId: dotenv.env['IosAppId']!,
+    messagingSenderId: dotenv.env['IosMessagingSenderId']!,
+    projectId: dotenv.env['IosProjectId']!,
+    storageBucket: dotenv.env['IosStorageBucket']!,
+    iosClientId: dotenv.env['IosClientId']!,
+    iosBundleId: dotenv.env['IosBundleId']!,
   );
 }
