@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/app.dart';
+import 'app_firebase.dart';
 
-void main() {
-  runApp(const App());
+void main() async {
+  runApp(const AppFirebase());
 }
