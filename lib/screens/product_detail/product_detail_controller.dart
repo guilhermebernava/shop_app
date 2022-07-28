@@ -7,7 +7,7 @@ import '../../models/cart.dart';
 import '../../services/modal_services.dart';
 
 class ProductDetailController {
-  void addCart(BuildContext context, ProductModel model) {
+  void addCart(BuildContext context, ProductModel model, Size size) {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
     cartProvider.addItem(
       CartModel(
@@ -19,7 +19,7 @@ class ProductDetailController {
     );
 
     ModalServices.showModal(context, 'Do you want to go to the cart?',
-            'you will be redirect to cart if you accept')
+            'you will be redirect to cart if you accept', size)
         .then((value) {
       if (value == true) {
         Navigator.pushReplacementNamed(context, Cart.route);

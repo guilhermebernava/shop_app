@@ -6,7 +6,7 @@ import 'package:shop_app/screens/orders/orders.dart';
 import '../../services/modal_services.dart';
 
 class CartController {
-  void createOrder(BuildContext context) {
+  void createOrder(BuildContext context, Size size) {
     final orderProvider = Provider.of<OrderProvider>(context, listen: false);
     final value = Provider.of<CartProvider>(context, listen: false);
 
@@ -15,7 +15,7 @@ class CartController {
     value.clearCart();
     orderProvider.addOrder(total, items);
     ModalServices.showModal(context, 'Want to go to yours orders?',
-            'if you accept you are going to be redirect to your orders')
+            'if you accept you are going to be redirect to your orders', size)
         .then((value) {
       if (value == true) {
         Navigator.pushReplacementNamed(context, Orders.route);

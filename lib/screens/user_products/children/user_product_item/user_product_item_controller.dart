@@ -6,10 +6,10 @@ import 'package:shop_app/services/modal_services.dart';
 import '../../../../providers/products_provider.dart';
 
 class UserProductItemController {
-  void delete(BuildContext context, ProductModel model) async {
+  void delete(BuildContext context, ProductModel model, Size size) async {
     final provider = Provider.of<ProductsProvider>(context, listen: false);
     final response = await ModalServices.showModal(context, 'Are you Sure?',
-        'You are going to delete this product permantanly!');
+        'You are going to delete this product permantanly!', size);
 
     if (response == true) {
       provider.removeByItem(model);

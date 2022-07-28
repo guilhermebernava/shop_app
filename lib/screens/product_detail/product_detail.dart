@@ -59,7 +59,7 @@ class ProductDetail extends StatelessWidget {
               ButtonWithIcon(
                 text: "Add",
                 icon: Icons.add_shopping_cart,
-                onTap: () => controller.addCart(context, model),
+                onTap: () => controller.addCart(context, model, size),
               ),
               const SizedBox(
                 height: 50,

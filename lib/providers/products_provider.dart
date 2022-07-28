@@ -65,7 +65,21 @@ class ProductsProvider with ChangeNotifier {
       );
 
   void add(ProductModel model) {
-    _products.add(model);
+    final existProduct = _products.firstWhere(
+        (element) => model.id == element.id,
+        orElse: () => ProductModel(
+            id: '-1', title: '', description: '', imageUrl: '', price: 0));
+
+    if (existProduct.id == '-1') {
+      _products.add(model);
+      notifyListeners();
+      return;
+    }
+
+    existProduct.description = model.description;
+    existProduct.price = model.price;
+    existProduct.imageUrl = model.imageUrl;
+    existProduct.title = model.title;
     notifyListeners();
   }
 

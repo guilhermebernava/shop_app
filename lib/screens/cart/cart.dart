@@ -62,7 +62,7 @@ class Cart extends StatelessWidget {
                 ),
                 OrderButton(
                   size: size,
-                  onTap: () => controller.createOrder(context),
+                  onTap: () => controller.createOrder(context, size),
                 ),
               ],
             ),

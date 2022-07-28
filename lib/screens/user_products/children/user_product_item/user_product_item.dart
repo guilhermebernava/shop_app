@@ -25,7 +25,7 @@ class UserProductItem extends StatelessWidget {
               title: Text(model.title),
               leading: RoundedImage(imageUrl: model.imageUrl),
               trailing: SizedBox(
-                width: size.width * 0.25,
+                width: size.width * 0.27,
                 child: Row(
                   children: [
                     IconButton(
@@ -36,7 +36,7 @@ class UserProductItem extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () => controller.delete(context, model),
+                      onPressed: () => controller.delete(context, model, size),
                       icon: const Icon(
                         Icons.delete,
                         color: Colors.redAccent,

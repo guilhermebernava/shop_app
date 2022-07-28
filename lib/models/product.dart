@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class ProductModel with ChangeNotifier {
   final String id;
-  final String title;
-  final String description;
+  String title;
+  String description;
   String imageUrl;
   double price;
   bool isFavorite;

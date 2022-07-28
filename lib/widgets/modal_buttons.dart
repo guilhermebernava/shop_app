@@ -20,7 +20,7 @@ class ModalButtons extends StatelessWidget {
         GestureDetector(
           onTap: () => Navigator.pop(context, false),
           child: Container(
-            width: modalSize / 2 - 1,
+            width: modalSize * 1.24,
             padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
             decoration: const BoxDecoration(
               color: Colors.red,
@@ -41,7 +41,7 @@ class ModalButtons extends StatelessWidget {
         GestureDetector(
           onTap: () => Navigator.pop(context, true),
           child: Container(
-            width: modalSize / 2 - 1,
+            width: modalSize * 1.23,
             padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
             decoration: const BoxDecoration(
               color: AppColors.darkGreen,

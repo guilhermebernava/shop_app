@@ -5,8 +5,7 @@ import '../widgets/modal_buttons.dart';
 
 class ModalServices {
   static Future<bool?> showModal(
-      BuildContext context, String title, String content) {
-    const modalSize = 300.0;
+      BuildContext context, String title, String content, Size size) {
     return showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -19,7 +18,7 @@ class ModalServices {
             ),
             contentPadding: const EdgeInsets.only(top: 10.0),
             content: SizedBox(
-              width: modalSize,
+              width: size.width * 0.3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -47,10 +46,10 @@ class ModalServices {
                       ),
                     ),
                   ),
-                  const ModalButtons(
+                  ModalButtons(
                     leftButtonName: 'CANCEL',
                     rightButtonName: 'ACCEPT',
-                    modalSize: modalSize,
+                    modalSize: size.width * 0.3,
                   )
                 ],
               ),

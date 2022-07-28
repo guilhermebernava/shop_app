@@ -11,8 +11,8 @@ class CardItemController {
     }
   }
 
-  Future<bool?> confirmDismiss(BuildContext context) {
+  Future<bool?> confirmDismiss(BuildContext context, Size size) {
     return ModalServices.showModal(context, 'Are you sure?',
-        'If you press ACCEPT you will remove these items from cart');
+        'If you press ACCEPT you will remove these items from cart', size);
   }
 }
