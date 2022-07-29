@@ -16,12 +16,20 @@ class Orders extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Orders"),
       ),
-      body: ListView.builder(
-        itemBuilder: (context, index) => OrderItem(
-          order: provider.orderAtIndex(index),
-        ),
-        itemCount: provider.lenght,
-      ),
+      body: provider.lenght < 1
+          ? const Center(
+              child: Text(
+                'Ops, no orders here!',
+                style: TextStyle(fontSize: 30, color: Colors.grey),
+                textAlign: TextAlign.center,
+              ),
+            )
+          : ListView.builder(
+              itemBuilder: (context, index) => OrderItem(
+                order: provider.orderAtIndex(index),
+              ),
+              itemCount: provider.lenght,
+            ),
     );
   }
 }

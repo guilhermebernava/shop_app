@@ -32,30 +32,39 @@ class Cart extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    itemBuilder: (context, index) {
-                      final key = value.items.keys.elementAt(index);
-                      final model = value.items[key];
-                      var res = model == null
-                          ? const Text('ERROR')
-                          : Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 5.0),
-                              child: CardItem(
-                                size,
-                                imageUrl: model.imageUrl,
-                                key: ValueKey(key),
-                                mapKey: key,
-                                price: model.price,
-                                title: model.title,
-                                quantity: model.quantity,
-                                onPressed: () => value.removeItem(model.id),
-                              ),
-                            );
-                      return res;
-                    },
-                    itemCount: value.lenght,
-                  ),
+                  child: value.allItems.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'Ops, no products here!',
+                            style: TextStyle(fontSize: 30, color: Colors.grey),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      : ListView.builder(
+                          itemBuilder: (context, index) {
+                            final key = value.items.keys.elementAt(index);
+                            final model = value.items[key];
+                            var res = model == null
+                                ? const Text('ERROR')
+                                : Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5.0),
+                                    child: CardItem(
+                                      size,
+                                      imageUrl: model.imageUrl,
+                                      key: ValueKey(key),
+                                      mapKey: key,
+                                      price: model.price,
+                                      title: model.title,
+                                      quantity: model.quantity,
+                                      onPressed: () =>
+                                          value.removeItem(model.id),
+                                    ),
+                                  );
+                            return res;
+                          },
+                          itemCount: value.lenght,
+                        ),
                 ),
                 CardTotal(
                   totalValue: value.totalValue,
