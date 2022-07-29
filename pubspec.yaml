@@ -40,6 +40,8 @@ dependencies:
   intl: ^0.17.0
   flutter_dotenv: ^5.0.2
   firebase_core:
+  http:
+  http_interceptor:
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
+import 'package:shop_app/services/snackbar_services.dart';
 import 'package:shop_app/services/validators_services.dart';
 import '../../models/product.dart';
 
@@ -69,7 +70,9 @@ class ProductEditController {
       price: double.parse(priceController.text),
     );
 
-    provider.add(model);
+    provider.addOrUpdate(model);
+
+    SnackbarServices.showSnackbar(context, 'Add item sucessfully!');
 
     Navigator.pushReplacementNamed(context, "/");
   }

@@ -5,6 +5,7 @@ import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/screens/products_overview/children/product_grid.dart';
 import 'package:shop_app/screens/products_overview/products_overview_controller.dart';
+import 'package:shop_app/themes/app_colors.dart';
 import 'package:shop_app/widgets/app_drawer.dart';
 import 'package:shop_app/widgets/badge_button.dart';
 
@@ -45,8 +46,32 @@ class ProductsOverview extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<ProductsProvider>(
-        builder: (context, value, child) => ProductGrid(size: size),
+      body: FutureBuilder(
+        future: provider.getProducts(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              break;
+            case ConnectionState.waiting:
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.darkGreen,
+                ),
+              );
+            case ConnectionState.active:
+              break;
+            case ConnectionState.done:
+              return Consumer<ProductsProvider>(
+                builder: (context, value, child) => ProductGrid(size: size),
+              );
+          }
+          return const Center(
+            child: Text(
+              'ERROR IN API',
+              style: TextStyle(fontSize: 30, color: Colors.red),
+            ),
+          );
+        },
       ),
       floatingActionButton: GestureDetector(
         onTap: () => controller.redirect(context),

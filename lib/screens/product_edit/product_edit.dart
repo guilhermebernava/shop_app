@@ -65,6 +65,11 @@ class ProductEdit extends StatelessWidget {
                   ],
                 ),
               ),
+              Image.network(
+                controller.imageController.text,
+                errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.image_not_supported_outlined),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,

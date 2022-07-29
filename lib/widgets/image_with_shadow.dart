@@ -30,6 +30,13 @@ class ImageWithShadow extends Container {
               height: size.height * 0.4,
               width: size.width,
               fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => const Center(
+                child: Icon(
+                  Icons.image,
+                  size: 30,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         );
