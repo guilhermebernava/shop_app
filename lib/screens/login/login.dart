@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/login/login_controller.dart';
 import 'package:shop_app/themes/app_colors.dart';
-import 'package:shop_app/widgets/input.dart';
-
-import '../../widgets/save_button.dart';
+import 'package:shop_app/widgets/form_login.dart';
+import 'package:shop_app/widgets/login_background.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -16,59 +15,41 @@ class Login extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          vertical: 10,
-          horizontal: 15,
-        ),
+      body: LoginBackground(
+        size: size,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 2,
-                  color: AppColors.green,
+            RotationTransition(
+              turns: const AlwaysStoppedAnimation(350 / 360),
+              child: Container(
+                width: size.width * 0.6,
+                height: size.height * 0.12,
+                decoration: BoxDecoration(
+                  color: AppColors.purple,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(2, 2),
+                      blurRadius: 3,
+                      color: Color.fromARGB(148, 0, 0, 0),
+                    )
+                  ],
                 ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Form(
-                key: controller.formKey,
-                child: SizedBox(
-                  height: size.height * 0.4,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Input(
-                        validator: (value) {
-                          return null;
-                        },
-                        controller: controller.emailController,
-                        inputType: TextInputType.emailAddress,
-                        label: 'Email',
-                      ),
-                      Input(
-                        validator: (value) {
-                          return null;
-                        },
-                        controller: controller.passwordController,
-                        label: 'Password',
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                        ),
-                        child: CustomTextButton(
-                          onTap: () {},
-                          text: 'Login',
-                          color: AppColors.orange,
-                        ),
-                      ),
-                    ],
+                child: const Center(
+                  child: Text(
+                    'My Shop',
+                    style: TextStyle(fontSize: 50, color: Colors.white),
                   ),
                 ),
               ),
+            ),
+            FormLogin(
+              size: size,
+              validatorEmail: (value) => controller.emailValidator(value),
+              validatorPassword: (value) => controller.passwordValidator(value),
+              emailController: controller.emailController,
+              passwordController: controller.passwordController,
             )
           ],
         ),

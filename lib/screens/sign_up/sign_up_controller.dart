@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import '../../services/validators_services.dart';
 
-class LoginController {
+class SignUpController {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();

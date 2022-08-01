@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class CustomTextButton extends InkWell {
   CustomTextButton({
     Key? key,
+    double width = double.infinity,
     required VoidCallback onTap,
     required String text,
     double borderRadius = 10,
@@ -15,7 +16,7 @@ class CustomTextButton extends InkWell {
           key: key,
           onTap: onTap,
           child: Container(
-            width: double.infinity,
+            width: width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(borderRadius),
               boxShadow: const [

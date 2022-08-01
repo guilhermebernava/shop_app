@@ -18,6 +18,14 @@ class ValidatorsServices {
     }
   }
 
+  String? password(String? value) {
+    return null;
+  }
+
+  String? email(String? value) {
+    return null;
+  }
+
   String? imageUrlValidator(String? value) {
     try {
       bool validURL = Uri.parse(value!).isAbsolute;
