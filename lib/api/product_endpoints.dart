@@ -42,6 +42,8 @@ class ProductEndpoints {
       endpoint + format,
     );
 
+    if (response.body == 'null') return [];
+
     Map<String, dynamic> body = json.decode(response.body);
     List<ProductModel> products = [];
 

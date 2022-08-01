@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/api/order_endpoints.dart';
 import 'package:shop_app/models/order.dart';
-import 'package:uuid/uuid.dart';
 import '../models/cart.dart';
 
 class OrderProvider with ChangeNotifier {
+  final orderEndpoints = OrderEndpoints();
   final List<Order> _orders = [];
 
   List<Order> get orders => [..._orders];
@@ -15,9 +16,31 @@ class OrderProvider with ChangeNotifier {
 
   int get lenght => _orders.length;
 
-  void addOrder(double total, List<CartModel> items) {
+  Future getOrders() async {
+    final list = await orderEndpoints.orders();
+    for (var product in _orders) {
+      list.removeWhere((element) => element.id == product.id);
+    }
+    _orders.addAll(list);
+    notifyListeners();
+  }
+
+  void addOrder(double total, List<CartModel> items) async {
+    final date = DateTime.now();
+    final id = await orderEndpoints.createOrder(
+      Order(
+        date,
+        total: total,
+        items: items,
+      ),
+    );
     _orders.add(
-      Order(DateTime.now(), total: total, id: const Uuid().v1(), items: items),
+      Order(
+        date,
+        total: total,
+        id: id,
+        items: items,
+      ),
     );
     notifyListeners();
   }

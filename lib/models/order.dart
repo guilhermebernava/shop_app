@@ -11,35 +11,45 @@ class Order {
   Order(
     this.dateOrder, {
     required this.total,
-    required this.id,
+    this.id = '-1',
     required this.items,
   });
 
   Map<String, dynamic> toMap() {
     return {
       "total": total,
-      'dateOrder': dateOrder,
+      'dateOrder': dateOrder.toString(),
       'items': items,
     };
   }
 
-  factory Order.fromMap(Map<String, dynamic> map) {
+  factory Order.fromMap(Map<String, dynamic> map, String id) {
     final mapItems = map['items'];
     final List<CartModel> listItems = [];
+    final date = DateTime.parse(map['dateOrder']);
 
-    for (var map in mapItems) {
-      listItems.add(CartModel.fromMap(map));
+    for (var body in mapItems) {
+      final map = json.decode(body);
+      listItems.add(
+        CartModel(
+            id: map['id'],
+            price: map['price'],
+            imageUrl: map['imageUrl'],
+            title: map['title'],
+            quantity: map['quantity']),
+      );
     }
 
     return Order(
-      id: map['id'],
+      date,
+      id: id,
       total: map['total'],
       items: listItems,
-      map['dateOrder'],
     );
   }
 
-  factory Order.fromJson(String source) => Order.fromMap(json.decode(source));
+  factory Order.fromJson(String source, String id) =>
+      Order.fromMap(json.decode(source), id);
 
   String toJson() => json.encode(toMap());
 }
