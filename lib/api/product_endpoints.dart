@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:http/http.dart';
 import 'package:shop_app/api/api.dart';
 import 'package:shop_app/models/product.dart';
 
@@ -9,53 +8,67 @@ class ProductEndpoints {
   static const format = '.json';
 
   Future<String> createProduct(ProductModel product) async {
-    var response = await api.post(
-      endpoint + format,
-      product.toJson(),
-    );
+    try {
+      var response = await api.post(
+        endpoint + format,
+        product.toJson(),
+      );
 
-    final body = json.decode(response.body);
+      final body = json.decode(response.body);
 
-    return body['name'];
+      return body['name'];
+    } catch (e) {
+      return 'error';
+    }
   }
 
-  Future<Response> updateProduct(ProductModel product) async {
-    var response = await api.put(
-      "$endpoint/${product.id}$format",
-      product.toJson(),
-    );
-
-    return response;
+  Future updateProduct(ProductModel product) async {
+    try {
+      await api.put(
+        "$endpoint/${product.id}$format",
+        product.toJson(),
+      );
+    } catch (e) {
+      return;
+    }
   }
 
-  Future<Response> deleteProduct(ProductModel product) async {
-    var response = await api.delete(
-      "$endpoint/${product.id}$format",
-      product.toJson(),
-    );
+  Future deleteProduct(ProductModel product) async {
+    try {
+      var response = await api.delete(
+        "$endpoint/${product.id}$format",
+        product.toJson(),
+      );
 
-    return response;
+      return response;
+    } catch (e) {
+      return;
+    }
   }
 
   Future<List<ProductModel>> getAllProducts() async {
-    var response = await api.get(
-      endpoint + format,
-    );
+    try {
+      var response = await api.get(
+        endpoint + format,
+      );
 
-    if (response.body == 'null') return [];
+      if (response.body == 'null') return [];
 
-    Map<String, dynamic> body = json.decode(response.body);
-    List<ProductModel> products = [];
+      Map<String, dynamic> body = json.decode(response.body);
+      List<ProductModel> products = [];
 
-    body.forEach(
-      (key, product) => products.add(
-        ProductModel.fromMap(product, key),
-      ),
-    );
+      body.forEach(
+        (key, product) => products.add(
+          ProductModel.fromMap(product, key),
+        ),
+      );
 
-    Future.delayed(const Duration(seconds: 2));
+      Future.delayed(const Duration(seconds: 2));
 
-    return products;
+      return products;
+    } catch (e) {
+      return [];
+    }
   }
 }
 

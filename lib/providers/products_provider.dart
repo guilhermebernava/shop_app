@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/product.dart';
+import 'package:shop_app/services/http_services.dart';
 import 'package:shop_app/services/list_services.dart';
 import '../api/product_endpoints.dart';
 
@@ -43,23 +44,29 @@ class ProductsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addOrUpdate(ProductModel model) {
+  bool addOrUpdate(ProductModel model) {
     final existProduct = ListServices.firstProduct(_products, model);
 
     if (existProduct.id == '-1') {
-      productEndpoints.createProduct(model).then(
-            (id) => _products.add(
-              ProductModel(
-                  id: id,
-                  title: model.title,
-                  description: model.description,
-                  imageUrl: model.imageUrl,
-                  price: model.price),
-            ),
-          );
-      notifyListeners();
-      return;
+      productEndpoints.createProduct(model).then((id) {
+        final valid = HttpServices.validatePostResponse(id);
+        if (!valid) {
+          return false;
+        }
+
+        _products.add(
+          ProductModel(
+              id: id,
+              title: model.title,
+              description: model.description,
+              imageUrl: model.imageUrl,
+              price: model.price),
+        );
+        notifyListeners();
+        return true;
+      });
     }
+
     productEndpoints
         .updateProduct(
       ProductModel(
@@ -77,7 +84,9 @@ class ProductsProvider with ChangeNotifier {
       existProduct.imageUrl = model.imageUrl;
       existProduct.title = model.title;
       notifyListeners();
+      return true;
     });
+    return false;
   }
 
   void removeByItem(ProductModel model) {

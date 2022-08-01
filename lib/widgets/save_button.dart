@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SaveButton extends InkWell {
-  SaveButton({
+class CustomTextButton extends InkWell {
+  CustomTextButton({
     Key? key,
     required VoidCallback onTap,
     required String text,

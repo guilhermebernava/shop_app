@@ -4,9 +4,11 @@ import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/order_provider.dart';
 import 'package:shop_app/providers/product_detail_provider.dart';
 import 'package:shop_app/screens/cart/cart.dart';
+import 'package:shop_app/screens/login/login.dart';
 import 'package:shop_app/screens/order_detail/order_detail.dart';
 import 'package:shop_app/screens/orders/orders.dart';
 import 'package:shop_app/screens/product_edit/product_edit.dart';
+import 'package:shop_app/screens/sign_up/sign_up.dart';
 import 'package:shop_app/screens/user_products/user_products.dart';
 import './providers/products_provider.dart';
 import './screens/product_detail/product_detail.dart';
@@ -44,8 +46,9 @@ class App extends StatelessWidget {
           ),
           fontFamily: 'Anton',
         ),
-        home: const ProductsOverview(),
+        initialRoute: Login.route,
         routes: {
+          '/': (context) => const ProductsOverview(),
           ProductDetail.route: (context) => ChangeNotifierProvider.value(
                 value: ProductDetailProvider(),
                 child: const ProductDetail(),
@@ -55,6 +58,8 @@ class App extends StatelessWidget {
           OrderDetail.route: (context) => const OrderDetail(),
           UserProducts.route: (context) => const UserProducts(),
           ProductEdit.route: (context) => const ProductEdit(),
+          Login.route: (context) => const Login(),
+          SingUp.route: (context) => const SingUp(),
         },
       ),
     );

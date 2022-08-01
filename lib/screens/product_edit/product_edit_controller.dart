@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
+import 'package:shop_app/services/modal_services.dart';
 import 'package:shop_app/services/snackbar_services.dart';
 import 'package:shop_app/services/validators_services.dart';
 import '../../models/product.dart';
@@ -57,7 +58,7 @@ class ProductEditController {
     return ValidatorsServices().imageUrlValidator(value);
   }
 
-  void createProduct() {
+  void createProduct(Size size) {
     final isValidForm = formKey.currentState?.validate();
 
     if (!isValidForm!) return;
@@ -70,7 +71,13 @@ class ProductEditController {
       price: double.parse(priceController.text),
     );
 
-    provider.addOrUpdate(model);
+    final valid = provider.addOrUpdate(model);
+
+    if (!valid) {
+      ModalServices.showModal(context, 'ERROR',
+          'an error happened when tried to create an PRODUCT', size);
+      return;
+    }
 
     SnackbarServices.showSnackbar(context, 'Add item sucessfully!');
 

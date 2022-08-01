@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/api/order_endpoints.dart';
 import 'package:shop_app/models/order.dart';
+import 'package:shop_app/services/http_services.dart';
 import '../models/cart.dart';
 
 class OrderProvider with ChangeNotifier {
@@ -25,7 +26,7 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addOrder(double total, List<CartModel> items) async {
+  Future<bool> addOrder(double total, List<CartModel> items) async {
     final date = DateTime.now();
     final id = await orderEndpoints.createOrder(
       Order(
@@ -34,6 +35,13 @@ class OrderProvider with ChangeNotifier {
         items: items,
       ),
     );
+
+    final valid = HttpServices.validatePostResponse(id);
+
+    if (!valid) {
+      return false;
+    }
+
     _orders.add(
       Order(
         date,
@@ -43,5 +51,6 @@ class OrderProvider with ChangeNotifier {
       ),
     );
     notifyListeners();
+    return true;
   }
 }

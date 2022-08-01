@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/product_edit/product_edit_controller.dart';
 import 'package:shop_app/themes/app_colors.dart';
+import 'package:shop_app/widgets/input.dart';
 import 'package:shop_app/widgets/save_button.dart';
 
 class ProductEdit extends StatelessWidget {
@@ -11,6 +12,7 @@ class ProductEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = ProductEditController(context);
+    final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -27,40 +29,27 @@ class ProductEdit extends StatelessWidget {
                 key: controller.formKey,
                 child: Column(
                   children: [
-                    TextFormField(
+                    Input(
                       validator: (value) => controller.textValidator(value),
                       controller: controller.titleController,
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        label: Text('Title'),
-                      ),
+                      label: 'Title',
                     ),
-                    TextFormField(
-                      validator: (value) => controller.textValidator(value),
-                      controller: controller.descriptionController,
-                      textInputAction: TextInputAction.next,
-                      maxLines: 5,
-                      decoration: const InputDecoration(
-                        label: Text('Description'),
-                      ),
-                    ),
-                    TextFormField(
+                    Input(
+                        validator: (value) => controller.textValidator(value),
+                        controller: controller.descriptionController,
+                        maxLines: 5,
+                        label: 'Description'),
+                    Input(
                       validator: (value) => controller.priceValidator(value),
                       controller: controller.priceController,
-                      textInputAction: TextInputAction.next,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        label: Text('Price'),
-                      ),
+                      inputType: TextInputType.number,
+                      label: 'Price',
                     ),
-                    TextFormField(
+                    Input(
                       validator: (value) => controller.imageValidator(value),
                       controller: controller.imageController,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.done,
-                      decoration: const InputDecoration(
-                        label: Text('Image Link'),
-                      ),
+                      action: TextInputAction.done,
+                      label: 'Image Link',
                     ),
                   ],
                 ),
@@ -74,8 +63,8 @@ class ProductEdit extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                   vertical: 20,
                 ),
-                child: SaveButton(
-                  onTap: () => controller.createProduct(),
+                child: CustomTextButton(
+                  onTap: () => controller.createProduct(size),
                   text: 'Save',
                   color: AppColors.orange,
                 ),
