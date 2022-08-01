@@ -49,14 +49,7 @@ class ProductEndpoints {
 
     body.forEach(
       (key, product) => products.add(
-        ProductModel(
-          id: key,
-          title: product['title'],
-          description: product['description'],
-          imageUrl: product['imageUrl'],
-          isFavorite: product['isFavorite'],
-          price: product['price'],
-        ),
+        ProductModel.fromMap(product, key),
       ),
     );
 

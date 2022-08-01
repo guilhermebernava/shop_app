@@ -33,9 +33,9 @@ class ProductModel with ChangeNotifier {
     };
   }
 
-  factory ProductModel.fromMap(Map<String, dynamic> map) {
+  factory ProductModel.fromMap(Map<String, dynamic> map, String id) {
     return ProductModel(
-      id: map['id'],
+      id: id,
       title: map['title'],
       description: map['description'],
       imageUrl: map['imageUrl'],
@@ -43,9 +43,6 @@ class ProductModel with ChangeNotifier {
       isFavorite: map['isFavorite'],
     );
   }
-
-  factory ProductModel.fromJson(String source) =>
-      ProductModel.fromMap(json.decode(source));
 
   String toJson() => json.encode(toMap());
 }

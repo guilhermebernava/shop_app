@@ -48,8 +48,5 @@ class Order {
     );
   }
 
-  factory Order.fromJson(String source, String id) =>
-      Order.fromMap(json.decode(source), id);
-
   String toJson() => json.encode(toMap());
 }
