@@ -15,9 +15,7 @@ class ProductItem extends StatelessWidget {
     final controller = ProductItemController(id);
     //se o LISTEN estiver como false, esse metodo BUILD
     //nn vai ser chamado novamente quando NOTFITY LISTENERS for chamado.
-    final provider = Provider.of<ProductModel>(
-      context,
-    );
+    final provider = Provider.of<ProductModel>(context);
     final productsProvider = Provider.of<ProductsProvider>(
       context,
       listen: false,

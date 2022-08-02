@@ -20,11 +20,6 @@ class ProductModel with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void favoriteProduct() {
-    isFavorite = !isFavorite;
-    notifyListeners();
-  }
-
   Map<String, dynamic> toMap() {
     return {
       "title": title,

@@ -36,13 +36,12 @@ class ProductDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Consumer2<ProductsProvider, ProductModel>(
-                builder: (context, products, product, child) =>
-                    ImageWithFavorite(
+              Consumer<ProductsProvider>(
+                builder: (context, products, child) => ImageWithFavorite(
                   size: size,
                   onTap: () => products.favoriteProduct(
-                    id,
-                    product.userId,
+                    model.id,
+                    model.userId,
                   ),
                   imageUrl: model.imageUrl,
                   favorited: model.isFavorite,
