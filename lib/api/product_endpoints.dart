@@ -7,10 +7,10 @@ class ProductEndpoints {
   static const endpoint = 'products';
   static const format = '.json';
 
-  Future<String> createProduct(ProductModel product) async {
+  Future<String> createProduct(ProductModel product, String token) async {
     try {
       var response = await api.post(
-        endpoint + format,
+        '$endpoint$format?auth=$token',
         product.toJson(),
       );
 
@@ -22,10 +22,10 @@ class ProductEndpoints {
     }
   }
 
-  Future updateProduct(ProductModel product) async {
+  Future updateProduct(ProductModel product, String token) async {
     try {
       await api.put(
-        "$endpoint/${product.id}$format",
+        "$endpoint/${product.id}$format?auth=$token",
         product.toJson(),
       );
     } catch (e) {
@@ -33,10 +33,10 @@ class ProductEndpoints {
     }
   }
 
-  Future deleteProduct(ProductModel product) async {
+  Future deleteProduct(ProductModel product, String token) async {
     try {
       var response = await api.delete(
-        "$endpoint/${product.id}$format",
+        "$endpoint/${product.id}$format?auth=$token",
         product.toJson(),
       );
 
@@ -46,10 +46,10 @@ class ProductEndpoints {
     }
   }
 
-  Future<List<ProductModel>> getAllProducts() async {
+  Future<List<ProductModel>> getAllProducts(String token) async {
     try {
       var response = await api.get(
-        endpoint + format,
+        '$endpoint$format?auth=$token',
       );
 
       if (response.body == 'null') return [];

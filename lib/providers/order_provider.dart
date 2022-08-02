@@ -7,6 +7,11 @@ import '../models/cart.dart';
 class OrderProvider with ChangeNotifier {
   final orderEndpoints = OrderEndpoints();
   final List<Order> _orders = [];
+  String _token = '';
+
+  void update(String token) {
+    _token = token;
+  }
 
   List<Order> get orders => [..._orders];
 
@@ -18,7 +23,7 @@ class OrderProvider with ChangeNotifier {
   int get lenght => _orders.length;
 
   Future getOrders() async {
-    final list = await orderEndpoints.orders();
+    final list = await orderEndpoints.orders(_token);
     for (var product in _orders) {
       list.removeWhere((element) => element.id == product.id);
     }
@@ -29,12 +34,12 @@ class OrderProvider with ChangeNotifier {
   Future<bool> addOrder(double total, List<CartModel> items) async {
     final date = DateTime.now();
     final id = await orderEndpoints.createOrder(
-      Order(
-        date,
-        total: total,
-        items: items,
-      ),
-    );
+        Order(
+          date,
+          total: total,
+          items: items,
+        ),
+        _token);
 
     final valid = HttpServices.validatePostResponse(id);
 

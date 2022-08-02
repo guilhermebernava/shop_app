@@ -7,6 +7,11 @@ import '../api/product_endpoints.dart';
 class ProductsProvider with ChangeNotifier {
   final productEndpoints = ProductEndpoints();
   final List<ProductModel> _products = [];
+  String _token = '';
+
+  void update(String token) {
+    _token = token;
+  }
 
   bool _showFavorites = false;
 
@@ -36,7 +41,7 @@ class ProductsProvider with ChangeNotifier {
       );
 
   Future getProducts() async {
-    final list = await productEndpoints.getAllProducts();
+    final list = await productEndpoints.getAllProducts(_token);
     for (var product in _products) {
       list.removeWhere((element) => element.id == product.id);
     }
@@ -48,7 +53,7 @@ class ProductsProvider with ChangeNotifier {
     final existProduct = ListServices.firstProduct(_products, model);
 
     if (existProduct.id == '-1') {
-      productEndpoints.createProduct(model).then((id) {
+      productEndpoints.createProduct(model, _token).then((id) {
         final valid = HttpServices.validatePostResponse(id);
         if (!valid) {
           return false;
@@ -77,6 +82,7 @@ class ProductsProvider with ChangeNotifier {
         isFavorite: model.isFavorite,
         id: existProduct.id,
       ),
+      _token,
     )
         .then((value) {
       existProduct.description = model.description;
@@ -90,7 +96,7 @@ class ProductsProvider with ChangeNotifier {
   }
 
   void removeByItem(ProductModel model) {
-    productEndpoints.deleteProduct(model).then((value) {
+    productEndpoints.deleteProduct(model, _token).then((value) {
       _products.remove(model);
       notifyListeners();
     });
@@ -99,7 +105,7 @@ class ProductsProvider with ChangeNotifier {
   void favoriteProduct(String id) {
     final product = productById(id);
     product.isFavorite = !product.isFavorite;
-    productEndpoints.updateProduct(product).then((value) {
+    productEndpoints.updateProduct(product, _token).then((value) {
       notifyListeners();
     });
   }

@@ -7,10 +7,10 @@ class OrderEndpoints {
   static const endpoint = 'orders';
   static const format = '.json';
 
-  Future<String> createOrder(Order order) async {
+  Future<String> createOrder(Order order, String token) async {
     try {
       var response = await api.post(
-        endpoint + format,
+        '$endpoint$format?auth=$token',
         order.toJson(),
       );
 
@@ -25,10 +25,10 @@ class OrderEndpoints {
     }
   }
 
-  Future<List<Order>> orders() async {
+  Future<List<Order>> orders(String token) async {
     try {
       var response = await api.get(
-        endpoint + format,
+        '$endpoint$format?auth=$token',
       );
 
       if (response.body == 'null') return [];
