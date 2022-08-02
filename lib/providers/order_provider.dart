@@ -24,6 +24,11 @@ class OrderProvider with ChangeNotifier {
 
   Future getOrders() async {
     final list = await orderEndpoints.orders(_token);
+
+    if (list == null) {
+      throw Error;
+    }
+
     for (var product in _orders) {
       list.removeWhere((element) => element.id == product.id);
     }
@@ -31,31 +36,34 @@ class OrderProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> addOrder(double total, List<CartModel> items) async {
+  Future<bool> addOrder(
+      double total, List<CartModel> items, BuildContext context) async {
     final date = DateTime.now();
-    final id = await orderEndpoints.createOrder(
+    return orderEndpoints
+        .createOrder(
+            Order(
+              date,
+              total: total,
+              items: items,
+            ),
+            _token)
+        .then((id) {
+      final valid = HttpServices.validate(id, context);
+
+      if (!valid) {
+        return false;
+      }
+
+      _orders.add(
         Order(
           date,
           total: total,
+          id: id,
           items: items,
         ),
-        _token);
-
-    final valid = HttpServices.validatePostResponse(id);
-
-    if (!valid) {
-      return false;
-    }
-
-    _orders.add(
-      Order(
-        date,
-        total: total,
-        id: id,
-        items: items,
-      ),
-    );
-    notifyListeners();
-    return true;
+      );
+      notifyListeners();
+      return true;
+    });
   }
 }

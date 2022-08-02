@@ -38,6 +38,7 @@ class Auth with ChangeNotifier {
       _model.userId = user.uid;
 
       await InternalStorageServices.setUser(_model.toJson());
+      notifyListeners();
 
       return 'success';
     } on FirebaseAuthException catch (e) {
@@ -64,6 +65,7 @@ class Auth with ChangeNotifier {
       _model.token = await user.getIdToken();
       _model.userId = user.uid;
       await InternalStorageServices.setUser(_model.toJson());
+      notifyListeners();
 
       return 'success';
     } on FirebaseAuthException catch (e) {

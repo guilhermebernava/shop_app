@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shop_app/models/product.dart';
 import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/order_provider.dart';
@@ -58,6 +57,7 @@ class App extends StatelessWidget {
               child: Consumer<Auth>(
                 builder: (context, auth, child) => MaterialApp(
                   title: 'Shop App',
+                  debugShowCheckedModeBanner: false,
                   theme: ThemeData(
                     colorScheme: ColorScheme.fromSwatch(
                       primarySwatch: const MaterialColor(

@@ -59,7 +59,7 @@ class ProductEdit extends StatelessWidget {
                   vertical: 20,
                 ),
                 child: CustomTextButton(
-                  onTap: () => controller.createProduct(size),
+                  onTap: () => controller.createProduct(size, context),
                   text: 'Save',
                   color: AppColors.orange,
                 ),

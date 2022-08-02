@@ -58,7 +58,7 @@ class ProductEditController {
     return ValidatorsServices().imageUrlValidator(value);
   }
 
-  void createProduct(Size size) {
+  void createProduct(Size size, BuildContext context) {
     final isValidForm = formKey.currentState?.validate();
 
     if (!isValidForm!) return;
@@ -71,16 +71,16 @@ class ProductEditController {
       price: double.parse(priceController.text),
     );
 
-    final valid = provider.addOrUpdate(model);
+    provider.addOrUpdate(model, context).then((valid) {
+      if (!valid) {
+        ModalServices.showModal(context, 'ERROR',
+            'an error happened when tried to create an PRODUCT', size);
+        return;
+      }
 
-    if (!valid) {
-      ModalServices.showModal(context, 'ERROR',
-          'an error happened when tried to create an PRODUCT', size);
-      return;
-    }
+      SnackbarServices.showSnackbar(context, 'Add item sucessfully!');
 
-    SnackbarServices.showSnackbar(context, 'Add item sucessfully!');
-
-    Navigator.pushReplacementNamed(context, "/");
+      Navigator.pushReplacementNamed(context, "/");
+    });
   }
 }

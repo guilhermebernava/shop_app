@@ -13,7 +13,7 @@ class CartController {
     var total = value.totalValue;
     var items = value.allItems;
     value.clearCart();
-    orderProvider.addOrder(total, items).then((valid) {
+    orderProvider.addOrder(total, items, context).then((valid) {
       if (!valid) {
         ModalServices.showModal(context, 'ERROR',
             'an error happend when tried to create ORDER', size);

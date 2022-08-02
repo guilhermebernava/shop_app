@@ -20,4 +20,9 @@ class InternalStorageServices {
       user,
     );
   }
+
+  static Future cleanUser() async {
+    final instance = await SharedPreferences.getInstance();
+    await instance.remove(Auth.key);
+  }
 }
