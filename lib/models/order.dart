@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'cart.dart';
 
 class Order {
@@ -7,9 +6,11 @@ class Order {
   final String id;
   final List<CartModel> items;
   final DateTime dateOrder;
+  final String userId;
 
   Order(
     this.dateOrder, {
+    required this.userId,
     required this.total,
     this.id = '-1',
     required this.items,
@@ -20,6 +21,7 @@ class Order {
       "total": total,
       'dateOrder': dateOrder.toString(),
       'items': items,
+      'userId': userId,
     };
   }
 
@@ -31,12 +33,7 @@ class Order {
     for (var body in mapItems) {
       final map = json.decode(body);
       listItems.add(
-        CartModel(
-            id: map['id'],
-            price: map['price'],
-            imageUrl: map['imageUrl'],
-            title: map['title'],
-            quantity: map['quantity']),
+        CartModel.fromMap(map),
       );
     }
 
@@ -44,6 +41,7 @@ class Order {
       date,
       id: id,
       total: map['total'],
+      userId: map['userId,'],
       items: listItems,
     );
   }

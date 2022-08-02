@@ -5,6 +5,7 @@ class CartModel {
   final String title;
   final double price;
   final String imageUrl;
+  final String userId;
   int quantity;
 
   CartModel({
@@ -12,6 +13,7 @@ class CartModel {
     required this.title,
     required this.price,
     required this.imageUrl,
+    required this.userId,
     this.quantity = 1,
   });
 
@@ -22,6 +24,7 @@ class CartModel {
       'price': price,
       'imageUrl': imageUrl,
       'quantity': quantity,
+      'userId': userId,
     };
   }
 
@@ -32,6 +35,7 @@ class CartModel {
       price: map['price'],
       imageUrl: map['imageUrl'],
       quantity: map['quantity'],
+      userId: map['userId'],
     );
   }
 

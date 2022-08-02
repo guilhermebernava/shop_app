@@ -8,6 +8,7 @@ class ProductModel with ChangeNotifier {
   String imageUrl;
   double price;
   bool isFavorite;
+  String userId;
 
   ProductModel({
     this.id = '-1',
@@ -15,6 +16,7 @@ class ProductModel with ChangeNotifier {
     required this.description,
     required this.imageUrl,
     required this.price,
+    required this.userId,
     this.isFavorite = false,
   });
 
@@ -29,7 +31,8 @@ class ProductModel with ChangeNotifier {
       'description': description,
       'price': price,
       'imageUrl': imageUrl,
-      'isFavorite': isFavorite
+      'isFavorite': isFavorite,
+      'userId': userId
     };
   }
 
@@ -41,6 +44,7 @@ class ProductModel with ChangeNotifier {
       imageUrl: map['imageUrl'],
       price: map['price'],
       isFavorite: map['isFavorite'],
+      userId: map['userId'],
     );
   }
 
