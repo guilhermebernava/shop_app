@@ -5,6 +5,7 @@ import 'package:shop_app/services/modal_services.dart';
 import 'package:shop_app/services/snackbar_services.dart';
 import 'package:shop_app/services/validators_services.dart';
 import '../../models/product.dart';
+import '../../providers/auth.dart';
 
 class ProductEditController {
   final BuildContext context;
@@ -19,7 +20,7 @@ class ProductEditController {
 
   ProductEditController(this.context) {
     final id = ModalRoute.of(context)?.settings.arguments as String?;
-    final userId = Provider.of<ProductModel>(context, listen: false).userId;
+    final userId = Provider.of<Auth>(context, listen: false).userId;
     product = id == null
         ? ProductModel(
             id: '-1',

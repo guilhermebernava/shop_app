@@ -4,12 +4,13 @@ import 'package:shop_app/services/http_services.dart';
 import 'package:shop_app/services/internal_storage_services.dart';
 import 'package:shop_app/services/list_services.dart';
 import '../api/product_endpoints.dart';
+import '../models/favorite.dart';
 
 class ProductsProvider with ChangeNotifier {
   final productEndpoints = ProductEndpoints();
   final List<ProductModel> _products = [];
   final List<ProductModel> _userProducts = [];
-  final List<String> _favoritesIds = [];
+  final List<FavoriteModel> _favoritesIds = [];
 
   String _token = '';
   String _userId = '';
@@ -23,11 +24,13 @@ class ProductsProvider with ChangeNotifier {
 
   bool _showFavorites = false;
 
-  bool isFavoriteProduct(String id) {
-    final result = _favoritesIds.firstWhere((element) => element == id,
-        orElse: () => 'empty');
+  bool isFavoriteProduct(String id, String usId) {
+    final result = _favoritesIds.firstWhere(
+      (element) => element.id == id && element.userId == usId,
+      orElse: () => FavoriteModel(id: 'empty', userId: ''),
+    );
 
-    if (result == 'empty') return false;
+    if (result.id == 'empty') return false;
 
     return true;
   }
@@ -44,9 +47,15 @@ class ProductsProvider with ChangeNotifier {
 
   List<ProductModel> get productsOrFavorites {
     if (_showFavorites) {
-      final res = _products
-          .where((element) => _favoritesIds.contains(element.id))
-          .toList();
+      final List<ProductModel> res = [];
+
+      for (var product in _products) {
+        for (var favorite in _favoritesIds) {
+          if (product.id == favorite.id && product.userId == favorite.userId) {
+            res.add(product);
+          }
+        }
+      }
       return res;
     }
     return [..._products];
@@ -152,27 +161,26 @@ class ProductsProvider with ChangeNotifier {
   }
 
   void favoriteProduct(String id, String userId) {
-    final product = productById(id, userId);
-    product.isFavorite = !product.isFavorite;
+    final existFavorite = ListServices.firstFavorite(_favoritesIds, id, userId);
 
-    if (product.isFavorite == false) {
-      _favoritesIds.remove(product.id);
-      notifyListeners();
+    if (existFavorite.id != '') {
+      productEndpoints
+          .favoriteProduct(_token, existFavorite.userId, existFavorite.id,
+              existFavorite.favoriteId)
+          .then((value) {
+        _favoritesIds.remove(existFavorite);
+        notifyListeners();
+      });
     } else {
-      _favoritesIds.add(product.id);
-      notifyListeners();
+      productEndpoints
+          .favoriteProduct(_token, userId, id, null)
+          .then((favoriteId) {
+        _favoritesIds.add(
+          FavoriteModel(id: id, userId: userId)..favoriteId = favoriteId,
+        );
+        notifyListeners();
+      });
     }
-
-    productEndpoints
-        .favoriteProduct(
-      _token,
-      _userId,
-      product.id,
-      product.isFavorite,
-    )
-        .then((value) {
-      notifyListeners();
-    });
   }
 
   void _updateUserProducts(ProductModel model, String id) {

@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:http/http.dart';
 import 'package:shop_app/api/api.dart';
+import 'package:shop_app/models/favorite.dart';
 import 'package:shop_app/models/product.dart';
 import '../services/http_services.dart';
 
@@ -37,27 +37,32 @@ class ProductEndpoints {
   }
 
   Future<String> favoriteProduct(
-      String token, String userId, String productId, bool favorited) async {
-    final response = favorited
-        ? await api.post(
-            "favorites/$userId$format?auth=$token",
-            json.encode({
-              'id': productId,
-              'userId': userId,
-            }),
-          )
-        : await api.delete(
-            "favorites/$userId$format?auth=$token",
-            json.encode({
-              'id': productId,
-              'userId': userId,
-            }),
-          );
+      String token, String userId, String productId, String? favoriteId) async {
+    if (favoriteId == null) {
+      final response = await api.post(
+        "favorites/$userId$format?auth=$token",
+        json.encode({
+          'id': productId,
+          'userId': userId,
+        }),
+      );
+      final body = json.decode(response!.body);
 
-    return HttpServices.validateResponse(response as Response);
+      return body['name'];
+    } else {
+      await api.delete(
+        "favorites/$userId/$favoriteId$format?auth=$token",
+        json.encode({
+          'id': productId,
+          'userId': userId,
+        }),
+      );
+      return 'deleted';
+    }
   }
 
-  Future<List<String>?> getFavoritesByUser(String token, String userId) async {
+  Future<List<FavoriteModel>?> getFavoritesByUser(
+      String token, String userId) async {
     final response = await api.get("favorites/$userId$format?auth=$token");
 
     if (response == null) {
@@ -74,9 +79,16 @@ class ProductEndpoints {
 
     Map<String, dynamic> body = json.decode(response.body);
 
-    final List<String> result = [];
+    final List<FavoriteModel> result = [];
 
-    body.forEach((key, value) => {result.add(value['id'])});
+    body.forEach((key, value) => {
+          result.add(
+            FavoriteModel(
+              id: value['id'],
+              userId: value['userId'],
+            ),
+          )
+        });
 
     return result;
   }

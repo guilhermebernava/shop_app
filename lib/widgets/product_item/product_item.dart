@@ -57,7 +57,10 @@ class ProductItem extends StatelessWidget {
             ),
             child: Consumer<ProductsProvider>(
               builder: (context, value, child) => ImageWithFavorite(
-                favorited: value.isFavoriteProduct(id),
+                favorited: value.isFavoriteProduct(
+                  id,
+                  provider.userId,
+                ),
                 imageUrl: provider.imageUrl,
                 onTap: () => productsProvider.favoriteProduct(
                   provider.id,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/models/product.dart';
-import 'package:shop_app/providers/product_detail_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/screens/product_detail/children/expanded_panel_product_detail.dart';
 import 'package:shop_app/screens/product_detail/children/text_row.dart';
