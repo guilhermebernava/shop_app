@@ -19,10 +19,28 @@ class ValidatorsServices {
   }
 
   String? password(String? value) {
+    if (value == null) return 'can\'t be null';
+
+    bool valid =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$')
+            .hasMatch(value);
+
+    if (!valid) {
+      return 'Password invalid! \n must have 1 lower char, 1 upper char, 1 number and 1 symbol';
+    }
     return null;
   }
 
-  String? email(String? value) {
+  String? email(String? email) {
+    if (email == null) {
+      return 'can\'t be null';
+    }
+
+    bool valid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+
+    if (!valid) return 'Put an valid e-mail';
     return null;
   }
 

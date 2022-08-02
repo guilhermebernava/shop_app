@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/login/login_controller.dart';
+import 'package:shop_app/services/route_services.dart';
 import 'package:shop_app/themes/app_colors.dart';
-import 'package:shop_app/widgets/form_login.dart';
+import 'package:shop_app/widgets/login_inputs.dart';
 import 'package:shop_app/widgets/login_background.dart';
 
 class Login extends StatelessWidget {
@@ -44,12 +45,20 @@ class Login extends StatelessWidget {
                 ),
               ),
             ),
-            FormLogin(
-              size: size,
-              validatorEmail: (value) => controller.emailValidator(value),
-              validatorPassword: (value) => controller.passwordValidator(value),
-              emailController: controller.emailController,
-              passwordController: controller.passwordController,
+            Form(
+              key: controller.formKey,
+              child: LoginInputs(
+                onTap: () {
+                  controller.loginUser(context).then((value) =>
+                      RouteServices.redirectNoReturn(value, '/', context));
+                },
+                size: size,
+                validatorEmail: (value) => controller.emailValidator(value),
+                validatorPassword: (value) =>
+                    controller.passwordValidator(value),
+                emailController: controller.emailController,
+                passwordController: controller.passwordController,
+              ),
             )
           ],
         ),

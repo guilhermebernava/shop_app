@@ -39,6 +39,7 @@ dependencies:
   uuid: ^3.0.6
   intl: ^0.17.0
   flutter_dotenv: ^5.0.2
+  firebase_auth: ^3.6.2
   firebase_core:
   http:
   http_interceptor:

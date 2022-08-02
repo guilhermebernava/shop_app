@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:shop_app/services/snackbar_services.dart';
+import '../../providers/auth.dart';
 import '../../services/validators_services.dart';
 
 class LoginController {
@@ -19,13 +21,26 @@ class LoginController {
     String? response;
     response = ValidatorsServices().notNull(value);
     if (response != null) return response;
-
-    return ValidatorsServices().password(value);
+    return null;
   }
 
-  void loginUser() {
+  Future<bool> loginUser(BuildContext context) async {
     final isValidForm = formKey.currentState?.validate();
 
-    if (!isValidForm!) return;
+    if (!isValidForm!) return false;
+
+    final value = await Provider.of<Auth>(context, listen: false)
+        .login(emailController.text, passwordController.text)
+        .then((value) {
+      if (value != 'success') {
+        formKey.currentState?.reset();
+        SnackbarServices.showErrorSnackbar(context, value);
+        return false;
+      }
+    });
+
+    if (value == false) return false;
+
+    return true;
   }
 }
