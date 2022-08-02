@@ -19,6 +19,7 @@ class ProductEditController {
 
   ProductEditController(this.context) {
     final id = ModalRoute.of(context)?.settings.arguments as String?;
+    final userId = Provider.of<ProductModel>(context, listen: false).userId;
     product = id == null
         ? ProductModel(
             id: '-1',
@@ -31,7 +32,7 @@ class ProductEditController {
         : Provider.of<ProductsProvider>(
             context,
             listen: false,
-          ).productById(id);
+          ).productById(id, userId);
 
     titleController.text = product.title;
     imageController.text = product.imageUrl;

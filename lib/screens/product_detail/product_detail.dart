@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/models/product.dart';
+import 'package:shop_app/providers/product_detail_provider.dart';
 import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/screens/product_detail/children/expanded_panel_product_detail.dart';
 import 'package:shop_app/screens/product_detail/children/text_row.dart';
@@ -17,10 +19,9 @@ class ProductDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     final id = ModalRoute.of(context)?.settings.arguments as String;
     final size = MediaQuery.of(context).size;
-    final model = Provider.of<ProductsProvider>(
-      context,
-      listen: false,
-    ).productById(id);
+    final userId = Provider.of<ProductModel>(context, listen: false).userId;
+    final model = Provider.of<ProductsProvider>(context, listen: false)
+        .productById(id, userId);
     final controller = ProductDetailController();
 
     return Scaffold(
@@ -36,10 +37,14 @@ class ProductDetail extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Consumer<ProductsProvider>(
-                builder: (context, value, child) => ImageWithFavorite(
+              Consumer2<ProductsProvider, ProductModel>(
+                builder: (context, products, product, child) =>
+                    ImageWithFavorite(
                   size: size,
-                  onTap: () => value.favoriteProduct(id),
+                  onTap: () => products.favoriteProduct(
+                    id,
+                    product.userId,
+                  ),
                   imageUrl: model.imageUrl,
                   favorited: model.isFavorite,
                 ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:http/http.dart';
 import 'package:shop_app/api/api.dart';
 import 'package:shop_app/models/product.dart';
 import '../services/http_services.dart';
@@ -35,6 +36,51 @@ class ProductEndpoints {
     return HttpServices.validateResponse(response);
   }
 
+  Future<String> favoriteProduct(
+      String token, String userId, String productId, bool favorited) async {
+    final response = favorited
+        ? await api.post(
+            "favorites/$userId$format?auth=$token",
+            json.encode({
+              'id': productId,
+              'userId': userId,
+            }),
+          )
+        : await api.delete(
+            "favorites/$userId$format?auth=$token",
+            json.encode({
+              'id': productId,
+              'userId': userId,
+            }),
+          );
+
+    return HttpServices.validateResponse(response as Response);
+  }
+
+  Future<List<String>?> getFavoritesByUser(String token, String userId) async {
+    final response = await api.get("favorites/$userId$format?auth=$token");
+
+    if (response == null) {
+      return [];
+    }
+
+    if (response.statusCode == 401) {
+      return null;
+    }
+
+    if (response.body == 'null') {
+      return [];
+    }
+
+    Map<String, dynamic> body = json.decode(response.body);
+
+    final List<String> result = [];
+
+    body.forEach((key, value) => {result.add(value['id'])});
+
+    return result;
+  }
+
   Future<String> deleteProduct(
       ProductModel product, String token, String userId) async {
     final response = await api.delete(
@@ -45,10 +91,9 @@ class ProductEndpoints {
     return HttpServices.validateResponse(response);
   }
 
-  Future<List<ProductModel>?> getAllProducts(
-      String token, String userId) async {
+  Future<List<ProductModel>?> getAllProducts(String token) async {
     var response = await api.get(
-      '$endpoint/$userId$format?auth=$token',
+      '$endpoint$format?auth=$token',
     );
 
     String isSucess = HttpServices.validateResponse(response);
@@ -61,11 +106,13 @@ class ProductEndpoints {
     Map<String, dynamic> body = json.decode(response.body);
     List<ProductModel> products = [];
 
-    body.forEach(
-      (key, product) => products.add(
-        ProductModel.fromMap(product, key),
-      ),
-    );
+    body.forEach((key, list) {
+      list.forEach((key, product) {
+        products.add(
+          ProductModel.fromMap(product, key),
+        );
+      });
+    });
 
     Future.delayed(const Duration(seconds: 2));
 

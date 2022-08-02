@@ -8,6 +8,9 @@ import '../api/product_endpoints.dart';
 class ProductsProvider with ChangeNotifier {
   final productEndpoints = ProductEndpoints();
   final List<ProductModel> _products = [];
+  final List<ProductModel> _userProducts = [];
+  final List<String> _favoritesIds = [];
+
   String _token = '';
   String _userId = '';
 
@@ -19,6 +22,15 @@ class ProductsProvider with ChangeNotifier {
   }
 
   bool _showFavorites = false;
+
+  bool isFavoriteProduct(String id) {
+    final result = _favoritesIds.firstWhere((element) => element == id,
+        orElse: () => 'empty');
+
+    if (result == 'empty') return false;
+
+    return true;
+  }
 
   void showFavorites() {
     _showFavorites = true;
@@ -32,23 +44,29 @@ class ProductsProvider with ChangeNotifier {
 
   List<ProductModel> get productsOrFavorites {
     if (_showFavorites) {
-      final res = _products.where((element) => element.isFavorite).toList();
+      final res = _products
+          .where((element) => _favoritesIds.contains(element.id))
+          .toList();
       return res;
     }
     return [..._products];
   }
 
+  List<ProductModel> get userProducts => [..._userProducts];
+
   List<ProductModel> get products => [..._products];
 
-  ProductModel productById(String id) => _products.firstWhere(
-        (element) => element.id == id,
+  ProductModel productById(String id, String userId) => _products.firstWhere(
+        (element) => element.id == id && element.userId == userId,
         orElse: () => _products.first,
       );
 
   Future getProducts() async {
-    final list = await productEndpoints.getAllProducts(_token, _userId);
+    final list = await productEndpoints.getAllProducts(_token);
+    final favorites =
+        await productEndpoints.getFavoritesByUser(_token, _userId);
 
-    if (list == null) {
+    if (list == null || favorites == null) {
       InternalStorageServices.cleanUser();
       return;
     }
@@ -56,6 +74,14 @@ class ProductsProvider with ChangeNotifier {
     for (var product in _products) {
       list.removeWhere((element) => element.id == product.id);
     }
+
+    for (var product in list) {
+      if (product.userId == _userId) {
+        _userProducts.add(product);
+      }
+    }
+
+    _favoritesIds.addAll(favorites);
     _products.addAll(list);
     notifyListeners();
   }
@@ -70,17 +96,15 @@ class ProductsProvider with ChangeNotifier {
           return false;
         }
 
-        _products.add(
-          ProductModel(
-            id: id,
-            title: model.title,
-            description: model.description,
-            imageUrl: model.imageUrl,
-            price: model.price,
-            userId: _userId,
-          ),
-        );
-        notifyListeners();
+        _products.add(ProductModel(
+          id: id,
+          title: model.title,
+          description: model.description,
+          imageUrl: model.imageUrl,
+          price: model.price,
+          userId: _userId,
+        ));
+        _updateUserProducts(model, id);
         return true;
       });
     }
@@ -108,7 +132,7 @@ class ProductsProvider with ChangeNotifier {
       existProduct.price = model.price;
       existProduct.imageUrl = model.imageUrl;
       existProduct.title = model.title;
-      notifyListeners();
+      _updateUserProducts(model, id);
       return true;
     });
   }
@@ -122,21 +146,55 @@ class ProductsProvider with ChangeNotifier {
     )
         .then((value) {
       _products.remove(model);
+      _userProducts.remove(model);
       notifyListeners();
     });
   }
 
-  void favoriteProduct(String id) {
-    final product = productById(id);
+  void favoriteProduct(String id, String userId) {
+    final product = productById(id, userId);
     product.isFavorite = !product.isFavorite;
+
+    if (product.isFavorite == false) {
+      _favoritesIds.remove(product.id);
+      notifyListeners();
+    } else {
+      _favoritesIds.add(product.id);
+      notifyListeners();
+    }
+
     productEndpoints
-        .updateProduct(
-      product,
+        .favoriteProduct(
       _token,
       _userId,
+      product.id,
+      product.isFavorite,
     )
         .then((value) {
       notifyListeners();
     });
+  }
+
+  void _updateUserProducts(ProductModel model, String id) {
+    final existProduct = ListServices.firstProduct(_userProducts, model);
+    if (existProduct.id == '-1') {
+      _products.add(ProductModel(
+        id: id,
+        title: model.title,
+        description: model.description,
+        imageUrl: model.imageUrl,
+        price: model.price,
+        userId: _userId,
+      ));
+      notifyListeners();
+      return;
+    }
+
+    existProduct.description = model.description;
+    existProduct.price = model.price;
+    existProduct.imageUrl = model.imageUrl;
+    existProduct.title = model.title;
+    notifyListeners();
+    return;
   }
 }

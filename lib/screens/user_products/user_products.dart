@@ -26,10 +26,10 @@ class UserProducts extends StatelessWidget {
       ),
       body: ListView.builder(
         itemBuilder: (context, index) => UserProductItem(
-          model: provider.products[index],
+          model: provider.userProducts[index],
           size: size,
         ),
-        itemCount: provider.products.length,
+        itemCount: provider.userProducts.length,
       ),
     );
   }

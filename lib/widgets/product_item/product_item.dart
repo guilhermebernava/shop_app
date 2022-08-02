@@ -55,11 +55,16 @@ class ProductItem extends StatelessWidget {
                 onPressed: () => controller.addToCart(context, provider),
               ),
             ),
-            child: ImageWithFavorite(
-              favorited: provider.isFavorite,
-              imageUrl: provider.imageUrl,
-              onTap: () => productsProvider.favoriteProduct(provider.id),
-              size: size,
+            child: Consumer<ProductsProvider>(
+              builder: (context, value, child) => ImageWithFavorite(
+                favorited: value.isFavoriteProduct(id),
+                imageUrl: provider.imageUrl,
+                onTap: () => productsProvider.favoriteProduct(
+                  provider.id,
+                  provider.userId,
+                ),
+                size: size,
+              ),
             ),
           ),
         ),

@@ -28,6 +28,7 @@ class ProductGrid extends StatelessWidget {
       itemBuilder: (context, index) => ChangeNotifierProvider.value(
         value: provider.productsOrFavorites[index],
         child: ProductItem(
+          key: ValueKey(provider.productsOrFavorites[index].id),
           id: provider.productsOrFavorites[index].id,
         ),
       ),

@@ -76,7 +76,6 @@ class Auth with ChangeNotifier {
 
   Future logout() async {
     try {
-      await FirebaseAuth.instance.signOut();
       await InternalStorageServices.cleanUser();
     } catch (e) {
       debugPrint(e.toString());
