@@ -9,9 +9,9 @@ class OrderEndpoints {
   static const endpoint = 'orders';
   static const format = '.json';
 
-  Future<String> createOrder(Order order, String token) async {
+  Future<String> createOrder(Order order, String token, String userId) async {
     var response = await api.post(
-      '$endpoint$format?auth=$token',
+      '$endpoint/$userId$format?auth=$token',
       order.toJson(),
     );
     String isSucess = HttpServices.validateResponse(response);
@@ -21,9 +21,9 @@ class OrderEndpoints {
     return body['name'];
   }
 
-  Future<List<Order>?> orders(String token) async {
+  Future<List<Order>?> orders(String token, String userId) async {
     var response = await api.get(
-      '$endpoint$format?auth=$token',
+      '$endpoint/$userId$format?auth=$token',
     );
 
     String isSucess = HttpServices.validateResponse(response);

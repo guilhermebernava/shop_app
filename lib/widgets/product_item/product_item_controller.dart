@@ -19,6 +19,7 @@ class ProductItemController {
         title: model.title,
         price: model.price,
         imageUrl: model.imageUrl,
+        userId: cartProvider.userId,
       ),
     );
 

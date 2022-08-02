@@ -8,9 +8,11 @@ class OrderProvider with ChangeNotifier {
   final orderEndpoints = OrderEndpoints();
   final List<Order> _orders = [];
   String _token = '';
+  String _userId = '';
 
-  void update(String token) {
+  void update(String token, String userId) {
     _token = token;
+    _userId = userId;
   }
 
   List<Order> get orders => [..._orders];
@@ -23,7 +25,7 @@ class OrderProvider with ChangeNotifier {
   int get lenght => _orders.length;
 
   Future getOrders() async {
-    final list = await orderEndpoints.orders(_token);
+    final list = await orderEndpoints.orders(_token, _userId);
 
     if (list == null) {
       throw Error;
@@ -41,12 +43,10 @@ class OrderProvider with ChangeNotifier {
     final date = DateTime.now();
     return orderEndpoints
         .createOrder(
-            Order(
-              date,
-              total: total,
-              items: items,
-            ),
-            _token)
+      Order(date, total: total, items: items, userId: _userId),
+      _token,
+      _userId,
+    )
         .then((id) {
       final valid = HttpServices.validate(id, context);
 
@@ -55,12 +55,7 @@ class OrderProvider with ChangeNotifier {
       }
 
       _orders.add(
-        Order(
-          date,
-          total: total,
-          id: id,
-          items: items,
-        ),
+        Order(date, total: total, id: id, items: items, userId: _userId),
       );
       notifyListeners();
       return true;

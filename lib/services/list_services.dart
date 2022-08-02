@@ -5,8 +5,13 @@ class ListServices {
       List<ProductModel> list, ProductModel model) {
     return list.firstWhere(
       (element) => model.id == element.id,
-      orElse: () =>
-          ProductModel(title: '', description: '', imageUrl: '', price: 0),
+      orElse: () => ProductModel(
+        title: '',
+        description: '',
+        imageUrl: '',
+        price: 0,
+        userId: '',
+      ),
     );
   }
 }

@@ -43,15 +43,17 @@ class App extends StatelessWidget {
                 ChangeNotifierProxyProvider<Auth, ProductsProvider>(
                   create: (_) => ProductsProvider(),
                   update: (_, auth, productProvider) =>
-                      productProvider!..update(auth.token),
+                      productProvider!..update(auth.token, auth.userId),
                 ),
-                ChangeNotifierProvider(
+                ChangeNotifierProxyProvider<Auth, CartProvider>(
                   create: (_) => CartProvider(),
+                  update: (_, auth, cartProvider) =>
+                      cartProvider!..update(auth.userId),
                 ),
                 ChangeNotifierProxyProvider<Auth, OrderProvider>(
                   create: (_) => OrderProvider(),
                   update: (_, auth, orderProvider) =>
-                      orderProvider!..update(auth.token),
+                      orderProvider!..update(auth.token, auth.userId),
                 ),
               ],
               child: Consumer<Auth>(
@@ -69,9 +71,10 @@ class App extends StatelessWidget {
                     ),
                     fontFamily: 'Anton',
                   ),
-                  initialRoute: auth.isAutenticated,
+                  home: auth.isAutenticated,
                   routes: {
-                    '/': (context) => const ProductsOverview(),
+                    ProductsOverview.route: (context) =>
+                        const ProductsOverview(),
                     ProductDetail.route: (context) =>
                         ChangeNotifierProvider.value(
                           value: ProductDetailProvider(),

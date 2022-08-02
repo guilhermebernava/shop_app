@@ -26,6 +26,7 @@ class ProductEditController {
             description: '',
             imageUrl: '',
             price: 0,
+            userId: '',
           )
         : Provider.of<ProductsProvider>(
             context,
@@ -69,6 +70,7 @@ class ProductEditController {
       description: descriptionController.text,
       imageUrl: imageController.text,
       price: double.parse(priceController.text),
+      userId: provider.userId,
     );
 
     provider.addOrUpdate(model, context).then((valid) {

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/screens/login/login.dart';
 import 'package:shop_app/screens/orders/orders.dart';
 import 'package:shop_app/screens/user_products/user_products.dart';
+import 'package:shop_app/widgets/button_drawer.dart';
+import '../providers/auth.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -18,56 +22,36 @@ class AppDrawer extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Column(
               children: [
-                InkWell(
+                ButtonDrawer(
+                  context,
+                  icon: Icons.shop,
+                  text: 'Home',
                   onTap: () => Navigator.pushReplacementNamed(context, '/'),
-                  child: const ListTile(
-                    leading: Icon(
-                      Icons.shop,
-                      size: 30,
-                    ),
-                    title: Text(
-                      'Home',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
                 ),
-                const Divider(
-                  thickness: 2,
-                ),
-                InkWell(
+                ButtonDrawer(
+                  context,
+                  icon: Icons.payment,
+                  text: 'Orders',
                   onTap: () => Navigator.pushNamed(context, Orders.route),
-                  child: const ListTile(
-                    leading: Icon(
-                      Icons.payment,
-                      size: 30,
-                    ),
-                    title: Text(
-                      'Order',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
                 ),
-                const Divider(thickness: 2),
-                InkWell(
+                ButtonDrawer(
+                  context,
+                  icon: Icons.edit,
+                  text: 'Yours Products',
                   onTap: () => Navigator.pushNamed(context, UserProducts.route),
-                  child: const ListTile(
-                    leading: Icon(
-                      Icons.edit,
-                      size: 30,
-                    ),
-                    title: Text(
-                      'Yours Products',
-                      style: TextStyle(
-                        fontSize: 20,
-                      ),
-                    ),
+                ),
+                Consumer<Auth>(
+                  builder: (context, value, child) => ButtonDrawer(
+                    context,
+                    icon: Icons.logout_outlined,
+                    text: 'Logout',
+                    onTap: () {
+                      value.logout().then((value) {
+                        Navigator.pushReplacementNamed(context, Login.route);
+                      });
+                    },
                   ),
                 ),
-                const Divider(thickness: 2),
               ],
             ),
           )

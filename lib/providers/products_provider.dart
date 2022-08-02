@@ -9,9 +9,13 @@ class ProductsProvider with ChangeNotifier {
   final productEndpoints = ProductEndpoints();
   final List<ProductModel> _products = [];
   String _token = '';
+  String _userId = '';
 
-  void update(String token) {
+  String get userId => _userId;
+
+  void update(String token, String userId) {
     _token = token;
+    _userId = userId;
   }
 
   bool _showFavorites = false;
@@ -42,7 +46,7 @@ class ProductsProvider with ChangeNotifier {
       );
 
   Future getProducts() async {
-    final list = await productEndpoints.getAllProducts(_token);
+    final list = await productEndpoints.getAllProducts(_token, _userId);
 
     if (list == null) {
       InternalStorageServices.cleanUser();
@@ -60,7 +64,7 @@ class ProductsProvider with ChangeNotifier {
     final existProduct = ListServices.firstProduct(_products, model);
 
     if (existProduct.id == '-1') {
-      return productEndpoints.createProduct(model, _token).then((id) {
+      return productEndpoints.createProduct(model, _token, _userId).then((id) {
         final valid = HttpServices.validate(id, context);
         if (!valid) {
           return false;
@@ -68,11 +72,13 @@ class ProductsProvider with ChangeNotifier {
 
         _products.add(
           ProductModel(
-              id: id,
-              title: model.title,
-              description: model.description,
-              imageUrl: model.imageUrl,
-              price: model.price),
+            id: id,
+            title: model.title,
+            description: model.description,
+            imageUrl: model.imageUrl,
+            price: model.price,
+            userId: _userId,
+          ),
         );
         notifyListeners();
         return true;
@@ -88,8 +94,10 @@ class ProductsProvider with ChangeNotifier {
         title: model.title,
         isFavorite: model.isFavorite,
         id: existProduct.id,
+        userId: _userId,
       ),
       _token,
+      _userId,
     )
         .then((id) {
       final valid = HttpServices.validate(id, context);
@@ -106,7 +114,13 @@ class ProductsProvider with ChangeNotifier {
   }
 
   void removeByItem(ProductModel model) {
-    productEndpoints.deleteProduct(model, _token).then((value) {
+    productEndpoints
+        .deleteProduct(
+      model,
+      _token,
+      _userId,
+    )
+        .then((value) {
       _products.remove(model);
       notifyListeners();
     });
@@ -115,7 +129,13 @@ class ProductsProvider with ChangeNotifier {
   void favoriteProduct(String id) {
     final product = productById(id);
     product.isFavorite = !product.isFavorite;
-    productEndpoints.updateProduct(product, _token).then((value) {
+    productEndpoints
+        .updateProduct(
+      product,
+      _token,
+      _userId,
+    )
+        .then((value) {
       notifyListeners();
     });
   }

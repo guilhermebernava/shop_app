@@ -3,6 +3,13 @@ import 'package:shop_app/models/cart.dart';
 
 class CartProvider with ChangeNotifier {
   final Map<String, CartModel> _items = {};
+  String _userId = '';
+
+  String get userId => _userId;
+
+  void update(String userId) {
+    _userId = userId;
+  }
 
   Map<String, CartModel> get items {
     return {..._items};
@@ -68,6 +75,7 @@ class CartProvider with ChangeNotifier {
           price: value.price,
           quantity: qtd,
           imageUrl: value.imageUrl,
+          userId: _userId,
         ),
       );
       notifyListeners();
@@ -92,6 +100,7 @@ class CartProvider with ChangeNotifier {
           price: value.price,
           imageUrl: value.imageUrl,
           quantity: value.quantity + 1,
+          userId: _userId,
         ),
       );
       notifyListeners();

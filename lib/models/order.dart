@@ -41,7 +41,7 @@ class Order {
       date,
       id: id,
       total: map['total'],
-      userId: map['userId,'],
+      userId: map['userId'],
       items: listItems,
     );
   }

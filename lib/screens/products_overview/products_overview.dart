@@ -12,6 +12,8 @@ import 'package:shop_app/widgets/badge_button.dart';
 class ProductsOverview extends StatelessWidget {
   const ProductsOverview({Key? key}) : super(key: key);
 
+  static const route = '/products-overview';
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

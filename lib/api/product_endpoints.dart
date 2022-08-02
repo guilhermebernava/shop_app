@@ -8,9 +8,10 @@ class ProductEndpoints {
   static const endpoint = 'products';
   static const format = '.json';
 
-  Future<String> createProduct(ProductModel product, String token) async {
+  Future<String> createProduct(
+      ProductModel product, String token, String userId) async {
     var response = await api.post(
-      '$endpoint$format?auth=$token',
+      '$endpoint/$userId$format?auth=$token',
       product.toJson(),
     );
 
@@ -24,27 +25,30 @@ class ProductEndpoints {
     return body['name'];
   }
 
-  Future<String> updateProduct(ProductModel product, String token) async {
+  Future<String> updateProduct(
+      ProductModel product, String token, String userId) async {
     final response = await api.put(
-      "$endpoint/${product.id}$format?auth=$token",
+      "$endpoint/$userId/${product.id}$format?auth=$token",
       product.toJson(),
     );
 
     return HttpServices.validateResponse(response);
   }
 
-  Future<String> deleteProduct(ProductModel product, String token) async {
+  Future<String> deleteProduct(
+      ProductModel product, String token, String userId) async {
     final response = await api.delete(
-      "$endpoint/${product.id}$format?auth=$token",
+      "$endpoint/$userId/${product.id}$format?auth=$token",
       product.toJson(),
     );
 
     return HttpServices.validateResponse(response);
   }
 
-  Future<List<ProductModel>?> getAllProducts(String token) async {
+  Future<List<ProductModel>?> getAllProducts(
+      String token, String userId) async {
     var response = await api.get(
-      '$endpoint$format?auth=$token',
+      '$endpoint/$userId$format?auth=$token',
     );
 
     String isSucess = HttpServices.validateResponse(response);

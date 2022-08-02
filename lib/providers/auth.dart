@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/screens/login/login.dart';
+import 'package:shop_app/screens/products_overview/products_overview.dart';
 import 'package:shop_app/services/internal_storage_services.dart';
 import '../models/auth_model.dart';
 
@@ -13,11 +14,11 @@ class Auth with ChangeNotifier {
 
   Auth(this._model);
 
-  String get isAutenticated {
+  Widget get isAutenticated {
     if (_model.token == '' && _model.userId == '') {
-      return Login.route;
+      return const Login();
     }
-    return '/';
+    return const ProductsOverview();
   }
 
   Future<String> login(String email, String password) async {
@@ -70,6 +71,16 @@ class Auth with ChangeNotifier {
       return 'success';
     } on FirebaseAuthException catch (e) {
       return e.code;
+    }
+  }
+
+  Future logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      await InternalStorageServices.cleanUser();
+    } catch (e) {
+      debugPrint(e.toString());
+      return;
     }
   }
 }
