@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/helpers/custom_router.dart';
 import 'package:shop_app/providers/auth.dart';
+import 'package:shop_app/providers/button_provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/order_provider.dart';
 import 'package:shop_app/providers/product_detail_provider.dart';
@@ -35,11 +36,9 @@ class App extends StatelessWidget {
             return const MaterialApp(
               debugShowCheckedModeBanner: false,
               home: Center(
-                child: Center(
-                  child: CircularProgressIndicator(
-                    color: AppColors.darkGreen,
-                    strokeWidth: 10,
-                  ),
+                child: CircularProgressIndicator(
+                  color: AppColors.darkGreen,
+                  strokeWidth: 10,
                 ),
               ),
             );
@@ -65,6 +64,9 @@ class App extends StatelessWidget {
                   create: (_) => OrderProvider(),
                   update: (_, auth, orderProvider) =>
                       orderProvider!..update(auth.token, auth.userId),
+                ),
+                ChangeNotifierProvider(
+                  create: (_) => ButtonProvider(),
                 ),
               ],
               child: Consumer<Auth>(

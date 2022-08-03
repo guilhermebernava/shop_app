@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/button_provider.dart';
 import 'package:shop_app/screens/product_edit/product_edit_controller.dart';
 import 'package:shop_app/themes/app_colors.dart';
 import 'package:shop_app/widgets/input.dart';
@@ -54,14 +56,34 @@ class ProductEdit extends StatelessWidget {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 20,
-                ),
-                child: CustomTextButton(
-                  onTap: () => controller.createProduct(size, context),
-                  text: 'Save',
-                  color: AppColors.orange,
+              Consumer<ButtonProvider>(
+                builder: (context, buttonProvider, child) => Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                  ),
+                  child: CustomTextButton(
+                    onTap: () {
+                      if (buttonProvider.canClick) {
+                        buttonProvider.timeoutCanClick(3);
+                        controller.createProduct(size, context);
+                      }
+                    },
+                    text: buttonProvider.canClick
+                        ? const Text(
+                            'save',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: AppColors.white,
+                              fontSize: 30,
+                            ),
+                          )
+                        : const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.white,
+                            ),
+                          ),
+                    color: AppColors.orange,
+                  ),
                 ),
               ),
             ],

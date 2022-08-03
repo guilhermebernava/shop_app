@@ -26,6 +26,7 @@ class _ImageWithFavoriteState extends State<ImageWithFavorite>
   late final AnimationController _controller;
   late final Animation<Color?> _animation;
   bool isReverse = false;
+  bool canPress = true;
 
   @override
   void initState() {
@@ -65,18 +66,27 @@ class _ImageWithFavoriteState extends State<ImageWithFavorite>
           padding: const EdgeInsets.all(10),
           child: InkWell(
             onTap: () {
-              widget.onTap();
-              if (isReverse == false) {
-                _controller.forward();
-                setState(() {
-                  isReverse = true;
-                });
-                return;
-              }
+              if (canPress) {
+                widget.onTap();
+                if (isReverse == false) {
+                  _controller.forward();
+                  setState(() {
+                    isReverse = true;
+                    canPress = false;
+                  });
+                  return;
+                }
 
-              _controller.reverse();
-              setState(() {
-                isReverse = false;
+                _controller.reverse();
+                setState(() {
+                  isReverse = false;
+                  canPress = false;
+                });
+              }
+              Future.delayed(const Duration(seconds: 2)).then((value) {
+                setState(() {
+                  canPress = true;
+                });
               });
             },
             child: AnimatedBuilder(

@@ -188,7 +188,7 @@ class ProductsProvider with ChangeNotifier {
   void _updateUserProducts(ProductModel model, String id) {
     final existProduct = ListServices.firstProduct(_userProducts, model);
     if (existProduct.id == '-1') {
-      _products.add(ProductModel(
+      _userProducts.add(ProductModel(
         id: id,
         title: model.title,
         description: model.description,

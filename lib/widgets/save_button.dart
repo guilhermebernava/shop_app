@@ -5,7 +5,7 @@ class CustomTextButton extends InkWell {
     Key? key,
     double width = double.infinity,
     required VoidCallback onTap,
-    required String text,
+    required Widget text,
     double borderRadius = 10,
     TextStyle style = const TextStyle(
       fontSize: 35,
@@ -29,11 +29,7 @@ class CustomTextButton extends InkWell {
             ),
             child: Padding(
               padding: const EdgeInsets.all(10.0),
-              child: Text(
-                text,
-                textAlign: TextAlign.center,
-                style: style,
-              ),
+              child: text,
             ),
           ),
         );

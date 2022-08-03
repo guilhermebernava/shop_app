@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shop_app/screens/login/login.dart';
 import 'package:shop_app/screens/orders/orders.dart';
 import 'package:shop_app/screens/user_products/user_products.dart';
+import 'package:shop_app/services/modal_services.dart';
 import 'package:shop_app/widgets/button_drawer.dart';
 import '../providers/auth.dart';
 
@@ -11,6 +12,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Drawer(
       child: Column(
         children: [
@@ -46,8 +48,18 @@ class AppDrawer extends StatelessWidget {
                     icon: Icons.logout_outlined,
                     text: 'Logout',
                     onTap: () {
-                      value.logout().then((value) {
-                        Navigator.pushReplacementNamed(context, Login.route);
+                      ModalServices.showModal(
+                              context,
+                              'Are you sure?',
+                              'if you accept you are going to be redirect to login',
+                              size)
+                          .then((res) {
+                        if (res == true) {
+                          value.logout().then((value) {
+                            Navigator.pushReplacementNamed(
+                                context, Login.route);
+                          });
+                        }
                       });
                     },
                   ),

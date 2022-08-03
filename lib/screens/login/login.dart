@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/button_provider.dart';
 import 'package:shop_app/screens/login/login_controller.dart';
 import 'package:shop_app/services/route_services.dart';
 import 'package:shop_app/themes/app_colors.dart';
+import 'package:shop_app/widgets/login_button.dart';
 import 'package:shop_app/widgets/login_inputs.dart';
 import 'package:shop_app/widgets/login_background.dart';
 
@@ -96,17 +99,38 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
               opacity: _opacityAnimation,
               child: Form(
                 key: controller.formKey,
-                child: LoginInputs(
-                  onTap: () {
-                    controller.loginUser(context).then((value) =>
-                        RouteServices.redirectNoReturn(value, '/', context));
-                  },
-                  size: size,
-                  validatorEmail: (value) => controller.emailValidator(value),
-                  validatorPassword: (value) =>
-                      controller.passwordValidator(value),
-                  emailController: controller.emailController,
-                  passwordController: controller.passwordController,
+                child: Column(
+                  children: [
+                    LoginInputs(
+                      size: size,
+                      validatorEmail: (value) =>
+                          controller.emailValidator(value),
+                      validatorPassword: (value) =>
+                          controller.passwordValidator(value),
+                      emailController: controller.emailController,
+                      passwordController: controller.passwordController,
+                    ),
+                    Consumer<ButtonProvider>(
+                      builder: (context, buttonProvider, child) => LoginButton(
+                        context: context,
+                        size: size,
+                        canClick: buttonProvider.canClick,
+                        onTap: () {
+                          if (buttonProvider.canClick) {
+                            buttonProvider.timeoutCanClick(2);
+
+                            controller.loginUser(context).then((value) {
+                              if (value) {
+                                RouteServices.redirectNoReturn(
+                                    value, '/', context);
+                              }
+                            });
+                          }
+                        },
+                        isLogin: true,
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
