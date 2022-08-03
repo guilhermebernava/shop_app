@@ -5,10 +5,57 @@ import 'package:shop_app/themes/app_colors.dart';
 import 'package:shop_app/widgets/login_inputs.dart';
 import 'package:shop_app/widgets/login_background.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
   static const route = '/login';
+
+  @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
+  late final AnimationController _animationController;
+  late final Animation<double> _animation;
+  late final Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(
+        milliseconds: 2200,
+      ),
+    );
+
+    _animation = Tween<double>(
+      begin: 0,
+      end: 350 / 360,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.fastOutSlowIn,
+      ),
+    );
+    _opacityAnimation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.ease,
+      ),
+    );
+    _animationController.forward();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +69,9 @@ class Login extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             RotationTransition(
-              turns: const AlwaysStoppedAnimation(350 / 360),
+              turns: _animation,
               child: Container(
-                width: size.width * 0.6,
+                width: size.width * 0.7,
                 height: size.height * 0.12,
                 decoration: BoxDecoration(
                   color: AppColors.purple,
@@ -45,21 +92,24 @@ class Login extends StatelessWidget {
                 ),
               ),
             ),
-            Form(
-              key: controller.formKey,
-              child: LoginInputs(
-                onTap: () {
-                  controller.loginUser(context).then((value) =>
-                      RouteServices.redirectNoReturn(value, '/', context));
-                },
-                size: size,
-                validatorEmail: (value) => controller.emailValidator(value),
-                validatorPassword: (value) =>
-                    controller.passwordValidator(value),
-                emailController: controller.emailController,
-                passwordController: controller.passwordController,
+            FadeTransition(
+              opacity: _opacityAnimation,
+              child: Form(
+                key: controller.formKey,
+                child: LoginInputs(
+                  onTap: () {
+                    controller.loginUser(context).then((value) =>
+                        RouteServices.redirectNoReturn(value, '/', context));
+                  },
+                  size: size,
+                  validatorEmail: (value) => controller.emailValidator(value),
+                  validatorPassword: (value) =>
+                      controller.passwordValidator(value),
+                  emailController: controller.emailController,
+                  passwordController: controller.passwordController,
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_app/helpers/custom_router.dart';
 import 'package:shop_app/providers/auth.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/providers/order_provider.dart';
@@ -31,7 +32,17 @@ class App extends StatelessWidget {
           case ConnectionState.none:
             break;
           case ConnectionState.waiting:
-            break;
+            return const MaterialApp(
+              debugShowCheckedModeBanner: false,
+              home: Center(
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.darkGreen,
+                    strokeWidth: 10,
+                  ),
+                ),
+              ),
+            );
           case ConnectionState.active:
             break;
           case ConnectionState.done:
@@ -61,6 +72,10 @@ class App extends StatelessWidget {
                   title: 'Shop App',
                   debugShowCheckedModeBanner: false,
                   theme: ThemeData(
+                    pageTransitionsTheme: PageTransitionsTheme(builders: {
+                      TargetPlatform.android: CustomPageTransitionBuilder(),
+                      TargetPlatform.iOS: CustomPageTransitionBuilder(),
+                    }),
                     colorScheme: ColorScheme.fromSwatch(
                       primarySwatch: const MaterialColor(
                         AppThemeColor.color,
@@ -75,9 +90,12 @@ class App extends StatelessWidget {
                   routes: {
                     ProductsOverview.route: (context) =>
                         const ProductsOverview(),
-                    ProductDetail.route: (context) =>
-                        ChangeNotifierProvider.value(
-                          value: ProductDetailProvider(),
+                    ProductDetail.route: (context) => MultiProvider(
+                          providers: [
+                            ChangeNotifierProvider(
+                              create: (_) => ProductDetailProvider(),
+                            ),
+                          ],
                           child: const ProductDetail(),
                         ),
                     Cart.route: (context) => const Cart(),

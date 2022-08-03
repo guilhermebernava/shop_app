@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shop_app/themes/app_images.dart';
 
 class ImageWithShadow extends Container {
   ImageWithShadow({
@@ -25,18 +26,14 @@ class ImageWithShadow extends Container {
           ),
           child: ClipRRect(
             borderRadius: borderRadius,
-            child: Image.network(
-              imageUrl,
-              height: size.height * 0.4,
+            child: FadeInImage(
+              height: size.height,
               width: size.width,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => const Center(
-                child: Icon(
-                  Icons.image,
-                  size: 30,
-                  color: Colors.white,
-                ),
+              placeholder: const AssetImage(AppImages.placeholder),
+              image: NetworkImage(
+                imageUrl,
               ),
+              fit: BoxFit.fill,
             ),
           ),
         );

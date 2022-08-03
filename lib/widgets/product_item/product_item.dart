@@ -7,15 +7,15 @@ import 'package:shop_app/widgets/image_with_favorite.dart';
 import 'package:shop_app/widgets/product_item/product_item_controller.dart';
 
 class ProductItem extends StatelessWidget {
-  final String id;
-  const ProductItem({Key? key, required this.id}) : super(key: key);
+  const ProductItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = ProductItemController(id);
     //se o LISTEN estiver como false, esse metodo BUILD
     //nn vai ser chamado novamente quando NOTFITY LISTENERS for chamado.
     final provider = Provider.of<ProductModel>(context);
+    final controller = ProductItemController(provider.id, provider.userId);
+
     final productsProvider = Provider.of<ProductsProvider>(
       context,
       listen: false,
@@ -55,8 +55,9 @@ class ProductItem extends StatelessWidget {
             ),
             child: Consumer<ProductsProvider>(
               builder: (context, value, child) => ImageWithFavorite(
+                tag: provider.id + provider.userId,
                 favorited: value.isFavoriteProduct(
-                  id,
+                  provider.id,
                   provider.userId,
                 ),
                 imageUrl: provider.imageUrl,
