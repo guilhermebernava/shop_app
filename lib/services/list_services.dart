@@ -19,9 +19,9 @@ class ListServices {
   static FavoriteModel firstFavorite(
       List<FavoriteModel> list, String id, String userId) {
     return list.firstWhere(
-      (element) =>id == element.id && userId == element.userId,
+      (element) => id == element.id && userId == element.userId,
       orElse: () => FavoriteModel(
-        id: '',
+        id: '-1',
         userId: '',
       ),
     );

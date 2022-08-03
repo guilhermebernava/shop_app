@@ -160,12 +160,13 @@ class ProductsProvider with ChangeNotifier {
     });
   }
 
-  void favoriteProduct(String id, String userId) {
-    final existFavorite = ListServices.firstFavorite(_favoritesIds, id, userId);
+  void favoriteProduct(String id, String userIdFavorite) {
+    final existFavorite =
+        ListServices.firstFavorite(_favoritesIds, id, userIdFavorite);
 
-    if (existFavorite.id != '') {
+    if (existFavorite.favoriteId != '-1') {
       productEndpoints
-          .favoriteProduct(_token, existFavorite.userId, existFavorite.id,
+          .favoriteProduct(_token, userId, userIdFavorite, existFavorite.id,
               existFavorite.favoriteId)
           .then((value) {
         _favoritesIds.remove(existFavorite);
@@ -173,10 +174,11 @@ class ProductsProvider with ChangeNotifier {
       });
     } else {
       productEndpoints
-          .favoriteProduct(_token, userId, id, null)
+          .favoriteProduct(_token, userId, userIdFavorite, id, null)
           .then((favoriteId) {
         _favoritesIds.add(
-          FavoriteModel(id: id, userId: userId)..favoriteId = favoriteId,
+          FavoriteModel(id: id, userId: userIdFavorite)
+            ..favoriteId = favoriteId,
         );
         notifyListeners();
       });

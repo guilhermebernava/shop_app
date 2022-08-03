@@ -36,28 +36,29 @@ class ProductEndpoints {
     return HttpServices.validateResponse(response);
   }
 
-  Future<String> favoriteProduct(
-      String token, String userId, String productId, String? favoriteId) async {
+  Future<String> favoriteProduct(String token, String userId,
+      String productUserId, String productId, String? favoriteId) async {
     if (favoriteId == null) {
       final response = await api.post(
         "favorites/$userId$format?auth=$token",
         json.encode({
           'id': productId,
-          'userId': userId,
+          'userId': productUserId,
         }),
       );
       final body = json.decode(response!.body);
 
       return body['name'];
     } else {
-      await api.delete(
+      final res = await api.delete(
         "favorites/$userId/$favoriteId$format?auth=$token",
         json.encode({
           'id': productId,
-          'userId': userId,
+          'userId': productUserId,
         }),
       );
-      return 'deleted';
+
+      return res!.statusCode.toString();
     }
   }
 
