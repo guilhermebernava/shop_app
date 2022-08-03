@@ -4,7 +4,6 @@ import 'package:shop_app/providers/products_provider.dart';
 import 'package:shop_app/screens/product_detail/children/expanded_panel_product_detail.dart';
 import 'package:shop_app/screens/product_detail/children/text_row.dart';
 import 'package:shop_app/screens/product_detail/product_detail_controller.dart';
-import 'package:shop_app/themes/app_colors.dart';
 import 'package:shop_app/widgets/button_with_icon.dart';
 import 'package:shop_app/widgets/image_with_favorite.dart';
 import 'package:shop_app/widgets/product_item/models/product_item_args.dart';
